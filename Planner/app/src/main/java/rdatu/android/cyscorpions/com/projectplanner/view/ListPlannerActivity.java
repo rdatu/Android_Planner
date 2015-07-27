@@ -1,6 +1,7 @@
 package rdatu.android.cyscorpions.com.projectplanner.view;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -16,6 +17,8 @@ import rdatu.android.cyscorpions.com.projectplanner.controller.PlannerPagerAdapt
  */
 public class ListPlannerActivity extends FragmentActivity implements ListPlannerFragment.Callbacks {
 
+    public static final String EXTRA_TIME_SELECTED = "timeselected";
+    public static final String EXTRA_DATE_SELECTED = "dateselected";
     private static final int PAGE_MIDDLE = 1;
     private ViewPager mViewPager;
     private Calendar mCurrentCalendar;
@@ -91,5 +94,13 @@ public class ListPlannerActivity extends FragmentActivity implements ListPlanner
             }
         }
 
+    }
+
+    @Override
+    public void onTimeSlotSelected(String time, String date) {
+        Intent i = new Intent(getApplicationContext(), ScheduleTaskActivity.class);
+        i.putExtra(EXTRA_TIME_SELECTED, time);
+        i.putExtra(EXTRA_DATE_SELECTED, date);
+        startActivity(i);
     }
 }

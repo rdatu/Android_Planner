@@ -90,6 +90,7 @@
                 android:layout_width="@dimen/zero_dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
+                android:editable="false"
                 android:gravity="center"
                 android:hint="@string/end_time"
                 />
@@ -102,6 +103,7 @@
         android:gravity="center">
 
         <Button
+            android:id="@+id/doneButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"
@@ -109,5 +111,5 @@
 
     </LinearLayout>
 
-    
+
 </LinearLayout>

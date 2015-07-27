@@ -14,6 +14,7 @@ public abstract class SingleFragmentActivity extends FragmentActivity {
     protected abstract Fragment createFragment();
 
     protected int getLayoutResId() {
+
         return R.layout.activity_fragment;
     }
 
