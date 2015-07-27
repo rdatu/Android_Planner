@@ -4,6 +4,7 @@ package rdatu.android.cyscorpions.com.projectplanner.view;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import rdatu.android.cyscorpions.com.projectplanner.R;
  */
 public class ListPlannerFragment extends ListFragment {
 
+    private static final String TAG = "Planner";
     private final String[] TIME_SLOT = {
             "00:00 - 01:00", "01:00 - 02:00",
             "02:00 - 03:00", "03:00 - 04:00",
@@ -53,13 +55,9 @@ public class ListPlannerFragment extends ListFragment {
         super.onAttach(activity);
         mCallbacks = (Callbacks) activity;
         mCallbacks.onListUpdate(getStringDate());
+        Log.d(TAG, "onAttach successful..." + " : " + (mCalendar == null) + ", " + getStringDate());
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mCallbacks = null;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,6 +74,7 @@ public class ListPlannerFragment extends ListFragment {
     }
 
     protected final void onNextDay() {
+
         if (mCalendar.get(Calendar.DAY_OF_MONTH) == mCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
             mCalendar.add(Calendar.MONTH, 1);
             mCalendar.set(Calendar.DAY_OF_MONTH, 1);
@@ -86,12 +85,14 @@ public class ListPlannerFragment extends ListFragment {
     }
 
     protected final void onPreviousDay() {
+
         if (mCalendar.get(Calendar.DAY_OF_MONTH) == mCalendar.getActualMinimum(Calendar.DAY_OF_MONTH)) {
             mCalendar.add(Calendar.MONTH, -1);
             mCalendar.set(Calendar.DAY_OF_MONTH, mCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
         } else {
             mCalendar.add(Calendar.DAY_OF_MONTH, -1);
         }
+        Log.d(TAG, (mCallbacks == null) + "////" + (mCalendar == null));
         mCallbacks.onListUpdate(getStringDate());
     }
 

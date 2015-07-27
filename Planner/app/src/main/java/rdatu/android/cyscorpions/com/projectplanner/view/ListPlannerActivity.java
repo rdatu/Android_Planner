@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 
 import java.util.Calendar;
@@ -17,10 +16,7 @@ import rdatu.android.cyscorpions.com.projectplanner.controller.PlannerPagerAdapt
  */
 public class ListPlannerActivity extends FragmentActivity implements ListPlannerFragment.Callbacks {
 
-
-    private static final int PAGE_LEFT = 0;
     private static final int PAGE_MIDDLE = 1;
-    private static final int PAGE_RIGHT = 2;
     private ViewPager mViewPager;
     private Calendar mCurrentCalendar;
     private int mSelectedPageIndex;
@@ -42,16 +38,14 @@ public class ListPlannerActivity extends FragmentActivity implements ListPlanner
         prevDay = (Calendar) mCurrentCalendar.clone();
         nextDay = (Calendar) mCurrentCalendar.clone();
 
-        prevDay.set(Calendar.DAY_OF_MONTH, prevDay.get(Calendar.DAY_OF_MONTH) - 1);
-        nextDay.set(Calendar.DAY_OF_MONTH, nextDay.get(Calendar.DAY_OF_MONTH) + 1);
+        prevDay.add(Calendar.DAY_OF_MONTH, -1);
+        nextDay.add(Calendar.DAY_OF_MONTH, 1);
 
         LIST_PLANNER[0] = ListPlannerFragment.newInstance(prevDay);
         LIST_PLANNER[1] = ListPlannerFragment.newInstance(mCurrentCalendar);
         LIST_PLANNER[2] = ListPlannerFragment.newInstance(nextDay);
 
-        FragmentManager fm = getSupportFragmentManager();
-        PlannerPagerAdapter adapter = new PlannerPagerAdapter(fm, LIST_PLANNER);
-
+        PlannerPagerAdapter adapter = new PlannerPagerAdapter(getSupportFragmentManager(), LIST_PLANNER);
 
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -80,10 +74,12 @@ public class ListPlannerActivity extends FragmentActivity implements ListPlanner
                 }
             }
         });
+        mViewPager.setAdapter(adapter);
         //SET Current Selected item to index 1,
         //index 1 is the middle one which should be the item that is always selected
         mViewPager.setCurrentItem(1, false);
-        mViewPager.setAdapter(adapter);
+
+
     }
 
     @TargetApi(11)
