@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ProjectPlanner</string>
+    <string name="start_button">Start Planner</string>
+    <string name="placeholder_text">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit</string>
 </resources>
