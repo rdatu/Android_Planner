@@ -1,10 +1,9 @@
 package rdatu.android.cyscorpions.com.projectplanner.view;
 
 
-import android.os.Build;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,13 +37,28 @@ public class ListPlannerFragment extends ListFragment {
     };
     private Calendar mCalendar;
     private TextView mTextTask, mTimeSlot;
+    private Callbacks mCallbacks;
 
     public ListPlannerFragment(Calendar a) {
         mCalendar = a;
+
     }
 
-    static ListPlannerFragment newInstance(Calendar a) {
+    public static ListPlannerFragment newInstance(Calendar a) {
         return new ListPlannerFragment(a);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mCallbacks = (Callbacks) activity;
+        mCallbacks.onListUpdate(getStringDate());
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
     }
 
     @Override
@@ -63,34 +77,31 @@ public class ListPlannerFragment extends ListFragment {
 
     protected final void onNextDay() {
         if (mCalendar.get(Calendar.DAY_OF_MONTH) == mCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
-            mCalendar.set(mCalendar.MONTH, mCalendar.MONTH + 1);
+            mCalendar.add(Calendar.MONTH, 1);
+            mCalendar.set(Calendar.DAY_OF_MONTH, 1);
         } else {
-            mCalendar.set(Calendar.DAY_OF_MONTH, mCalendar.get(Calendar.DAY_OF_MONTH) + 1);
+            mCalendar.add(Calendar.DAY_OF_MONTH, 1);
         }
-
-        SimpleDateFormat df = new SimpleDateFormat("MMM-dd-yyyy");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            String dateString = df.format(mCalendar.getTime());
-            Log.d("DATEPROBLEM", "Next " + dateString);
-
-        }
-
+        mCallbacks.onListUpdate(getStringDate());
     }
 
     protected final void onPreviousDay() {
-        if (mCalendar.get(Calendar.DAY_OF_MONTH) == mCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
-            mCalendar.set(mCalendar.MONTH, mCalendar.MONTH - 1);
+        if (mCalendar.get(Calendar.DAY_OF_MONTH) == mCalendar.getActualMinimum(Calendar.DAY_OF_MONTH)) {
+            mCalendar.add(Calendar.MONTH, -1);
+            mCalendar.set(Calendar.DAY_OF_MONTH, mCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
         } else {
-            mCalendar.set(Calendar.DAY_OF_MONTH, mCalendar.get(Calendar.DAY_OF_MONTH) - 1);
+            mCalendar.add(Calendar.DAY_OF_MONTH, -1);
         }
+        mCallbacks.onListUpdate(getStringDate());
+    }
 
+    private String getStringDate() {
         SimpleDateFormat df = new SimpleDateFormat("MMM-dd-yyyy");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            String dateString = df.format(mCalendar.getTime());
-            Log.d("DATEPROBLEM", "PREVIOUS " + dateString);
+        return df.format(mCalendar.getTime());
+    }
 
-        }
-
+    public interface Callbacks {
+        void onListUpdate(String date);
     }
 
     private class ListFragmentAdapter extends ArrayAdapter<String> {

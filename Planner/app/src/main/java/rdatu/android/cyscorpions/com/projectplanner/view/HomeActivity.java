@@ -5,6 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import rdatu.android.cyscorpions.com.projectplanner.R;
 
@@ -26,6 +30,9 @@ public class HomeActivity extends Activity {
                 startActivity(i);
             }
         });
+
+        SimpleDateFormat df = new SimpleDateFormat("MMM-dd-yyyy");
+        Toast.makeText(getApplicationContext(), df.format(Calendar.getInstance().getTime()), Toast.LENGTH_LONG).show();
 
 
     }

@@ -1,20 +1,21 @@
 package rdatu.android.cyscorpions.com.projectplanner.view;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import java.util.Calendar;
 
 import rdatu.android.cyscorpions.com.projectplanner.R;
+import rdatu.android.cyscorpions.com.projectplanner.controller.PlannerPagerAdapter;
 
 /**
  * Created by rayeldatu on 7/27/15.
  */
-public class ListPlannerActivity extends FragmentActivity {
+public class ListPlannerActivity extends FragmentActivity implements ListPlannerFragment.Callbacks {
 
 
     private static final int PAGE_LEFT = 0;
@@ -29,13 +30,15 @@ public class ListPlannerActivity extends FragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        final ListPlannerFragment[] LIST_PLANNER = new ListPlannerFragment[3];
+        Calendar prevDay, nextDay;
 
         mViewPager = new ViewPager(this);
         mViewPager.setId(R.id.ViewPager);
         mCurrentCalendar = Calendar.getInstance();
-        final ListPlannerFragment[] LIST_PLANNER = new ListPlannerFragment[3];
+
         setContentView(mViewPager);
-        Calendar prevDay, nextDay;
+
         prevDay = (Calendar) mCurrentCalendar.clone();
         nextDay = (Calendar) mCurrentCalendar.clone();
 
@@ -47,23 +50,13 @@ public class ListPlannerActivity extends FragmentActivity {
         LIST_PLANNER[2] = ListPlannerFragment.newInstance(nextDay);
 
         FragmentManager fm = getSupportFragmentManager();
-        mViewPager.setAdapter(new FragmentStatePagerAdapter(fm) {
-            @Override
-            public Fragment getItem(int i) {
+        PlannerPagerAdapter adapter = new PlannerPagerAdapter(fm, LIST_PLANNER);
 
-                return LIST_PLANNER[i];
-            }
-
-            @Override
-            public int getCount() {
-                return LIST_PLANNER.length;
-            }
-        });
 
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i1) {
-
+                //Intentionally left Blank!
             }
 
             @Override
@@ -84,13 +77,23 @@ public class ListPlannerActivity extends FragmentActivity {
                         LIST_PLANNER[2].onNextDay();
                     }
                     mViewPager.setCurrentItem(1, false);
-
                 }
-
             }
-
         });
+        //SET Current Selected item to index 1,
+        //index 1 is the middle one which should be the item that is always selected
+        mViewPager.setCurrentItem(1, false);
+        mViewPager.setAdapter(adapter);
+    }
 
+    @TargetApi(11)
+    @Override
+    public void onListUpdate(String date) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            if (getActionBar() != null) {
+                setTitle(date);
+            }
+        }
 
     }
 }
