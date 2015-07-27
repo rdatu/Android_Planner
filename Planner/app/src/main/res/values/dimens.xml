@@ -5,5 +5,7 @@
     <dimen name="list_item_layout_padding">10dp</dimen>
     <dimen name="list_item_layout2_margintop">8dp</dimen>
     <dimen name="zero_dp">0dp</dimen>
+    <dimen name="default_margin_top">10dp</dimen>
+    <dimen name="horizontal_text_padding">40dp</dimen>
 
 </resources>
