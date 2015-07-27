@@ -3,5 +3,7 @@
     <dimen name="start_button_margin_h">20dp</dimen>
     <dimen name="start_button_margin_b">50dp</dimen>
     <dimen name="list_item_layout_padding">10dp</dimen>
+    <dimen name="list_item_layout2_margintop">8dp</dimen>
+    <dimen name="zero_dp">0dp</dimen>
 
 </resources>
