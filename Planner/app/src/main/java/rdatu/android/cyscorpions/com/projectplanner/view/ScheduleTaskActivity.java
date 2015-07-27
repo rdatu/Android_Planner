@@ -18,7 +18,7 @@ import rdatu.android.cyscorpions.com.projectplanner.model.Tasks;
 public class ScheduleTaskActivity extends FragmentActivity {
 
     private String mTimeStart, mTimeEnd, mDateSelected;
-    private EditText mFromTimeText, mToTimeText, mTaskNameText, mTaskDescriptionText;
+    private EditText mFromTimeText, mToTimeText, mTaskNameText, mTaskDescriptionText, mPlaceText;
     private Button mDateButton, mDoneButton;
 
     @Override
@@ -60,22 +60,26 @@ public class ScheduleTaskActivity extends FragmentActivity {
 
         mTaskNameText = (EditText) findViewById(R.id.inputTaskName);
         mTaskDescriptionText = (EditText) findViewById(R.id.inputDescription);
+        mPlaceText = (EditText) findViewById(R.id.inputPlace);
 
         mDoneButton = (Button) findViewById(R.id.doneButton);
         mDoneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name, descr, date, time;
+                String name, descr, date, time, place;
                 name = mTaskNameText.getText().toString();
                 descr = mTaskDescriptionText.getText().toString();
                 date = mDateButton.getText().toString();
                 time = mTimeStart + " - " + mTimeEnd;
+                place = mPlaceText.getText().toString();
                 Toast.makeText(getApplicationContext(), "TODO: Confirmation Dialog", Toast.LENGTH_LONG).show();
                 Tasks task = new Tasks();
                 task.setDate(date);
                 task.setTimeSlot(time);
                 task.setTaskName(name);
                 task.setDescription(descr);
+                task.setPlace(place);
+
             }
         });
 

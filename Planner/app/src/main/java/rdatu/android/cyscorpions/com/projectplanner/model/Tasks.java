@@ -7,7 +7,7 @@ import java.util.UUID;
  */
 public class Tasks {
     private UUID mId;
-    private String mTaskName, mDescription, mTimeSlot, mDate;
+    private String mTaskName, mDescription, mTimeSlot, mDate, mPlace;
 
     public Tasks() {
         mId = UUID.randomUUID();
@@ -47,5 +47,13 @@ public class Tasks {
 
     public void setDate(String date) {
         mDate = date;
+    }
+
+    public String getPlace() {
+        return mPlace;
+    }
+
+    public void setPlace(String place) {
+        mPlace = place;
     }
 }
