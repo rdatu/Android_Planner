@@ -3,6 +3,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
+              android:overScrollMode="always"
               android:padding="@dimen/list_item_layout_padding">
 
     <TextView
@@ -75,6 +76,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin_top"
+            android:text="@string/priority_text"/>
+
+        <Button
+            android:id="@+id/priority_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <TextView
+            style="?android:listSeparatorTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin_top"
             android:text="@string/time_text"/>
 
         <LinearLayout
@@ -110,20 +124,9 @@
                 android:gravity="center"
                 android:hint="@string/end_time"
                 />
+
+
         </LinearLayout>
-
-        <TextView
-            style="?android:listSeparatorTextViewStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/default_margin_top"
-            android:text="@string/priority_text"/>
-
-        <Button
-            android:id="@+id/priority_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
 
 
     </LinearLayout>
