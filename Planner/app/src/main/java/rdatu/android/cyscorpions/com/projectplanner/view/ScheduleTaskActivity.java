@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,7 +16,7 @@ import rdatu.android.cyscorpions.com.projectplanner.model.Tasks;
 /**
  * Created by rayeldatu on 7/27/15.
  */
-public class ScheduleTaskActivity extends FragmentActivity {
+public class ScheduleTaskActivity extends FragmentActivity implements DatePickerFragment.Callbacks, TimePickerFragment.Callbacks {
 
     private String mTimeStart, mTimeEnd, mDateSelected;
     private EditText mFromTimeText, mToTimeText, mTaskNameText, mTaskDescriptionText, mPlaceText;
@@ -45,7 +46,7 @@ public class ScheduleTaskActivity extends FragmentActivity {
         mToTimeText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "TODO: TimePicker Dialog", Toast.LENGTH_LONG).show();
+                showTimePicker();
             }
         });
 
@@ -54,7 +55,7 @@ public class ScheduleTaskActivity extends FragmentActivity {
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "TODO: DatePicker Dialog", Toast.LENGTH_LONG).show();
+                showDatePicker();
             }
         });
 
@@ -72,7 +73,7 @@ public class ScheduleTaskActivity extends FragmentActivity {
                 date = mDateButton.getText().toString();
                 time = mTimeStart + " - " + mTimeEnd;
                 place = mPlaceText.getText().toString();
-                Toast.makeText(getApplicationContext(), "TODO: Confirmation Dialog", Toast.LENGTH_LONG).show();
+
                 Tasks task = new Tasks();
                 task.setDate(date);
                 task.setTimeSlot(time);
@@ -80,8 +81,35 @@ public class ScheduleTaskActivity extends FragmentActivity {
                 task.setDescription(descr);
                 task.setPlace(place);
 
+                Toast.makeText(getApplicationContext(), "TODO: Confirmation Dialog", Toast.LENGTH_LONG).show();
+
+
             }
         });
 
+    }
+
+
+    private void showDatePicker() {
+        FragmentManager fm = getSupportFragmentManager();
+        DatePickerFragment dialog = DatePickerFragment.newInstance(mDateButton.getText().toString());
+        dialog.show(fm, "datePicker");
+    }
+
+    private void showTimePicker() {
+        FragmentManager fm = getSupportFragmentManager();
+        TimePickerFragment dialog = TimePickerFragment.newInstance(mToTimeText.getText().toString());
+        dialog.show(fm, "timePicker");
+    }
+
+    @Override
+    public void onTimeChanged(String time) {
+        mToTimeText.setText(time);
+
+    }
+
+    @Override
+    public void onDateChanged(String date) {
+        mDateButton.setText(date);
     }
 }

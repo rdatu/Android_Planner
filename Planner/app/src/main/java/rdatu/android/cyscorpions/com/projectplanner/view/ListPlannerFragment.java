@@ -104,7 +104,7 @@ public class ListPlannerFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         String time = ((TextView) v.findViewById(R.id.time_slot)).getText().toString();
-        mCallbacks.onTimeSlotSelected(time, getStringDate());
+        mCallbacks.onTimeSlotSelected(time, getActivity().getTitle().toString());
     }
 
     public interface Callbacks {
