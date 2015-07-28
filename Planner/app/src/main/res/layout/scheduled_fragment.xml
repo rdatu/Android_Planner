@@ -1,131 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:overScrollMode="always"
-              android:padding="@dimen/list_item_layout_padding">
-
-    <TextView
-        style="?android:listSeparatorTextViewStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/task_name"/>
-
-    <EditText
-        android:id="@+id/inputTaskName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/enter_task_name"/>
-
-    <TextView
-        style="?android:listSeparatorTextViewStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/default_margin_top"
-        android:text="@string/description"/>
-
-    <EditText
-        android:id="@+id/inputDescription"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/zero_dp"
-        android:layout_weight="2"
-        android:gravity="bottom"
-        android:hint="@string/description"
-        android:inputType="textMultiLine"/>
-
-    <TextView
-        style="?android:listSeparatorTextViewStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/default_margin_top"
-        android:text="@string/date"/>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/zero_dp"
-        android:layout_weight="8"
-        android:gravity="center_horizontal|top"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:overScrollMode="always"
+        android:padding="@dimen/list_item_layout_padding">
 
-        <Button
-            android:id="@+id/dateButton"
+        <TextView
+            style="?android:listSeparatorTextViewStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Date"
-            />
+            android:text="@string/task_name"/>
+
+        <EditText
+            android:id="@+id/inputTaskName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_task_name"/>
 
         <TextView
             style="?android:listSeparatorTextViewStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin_top"
-            android:text="@string/priority_text"/>
+            android:text="@string/description"/>
 
-        <Button
-            android:id="@+id/priority_button"
+        <EditText
+            android:id="@+id/inputDescription"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            android:layout_height="@dimen/zero_dp"
+            android:layout_weight="2"
+            android:gravity="bottom"
+            android:hint="@string/description"
+            android:inputType="textMultiLine"/>
 
         <TextView
             style="?android:listSeparatorTextViewStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin_top"
-            android:text="@string/time_text"/>
+            android:text="@string/date"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/zero_dp"
+            android:layout_weight="8"
+            android:gravity="center_horizontal|top"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/dateButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Date"
+                />
+
+            <TextView
+                style="?android:listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin_top"
+                android:text="@string/priority_text"/>
+
+            <Button
+                android:id="@+id/priority_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+            <TextView
+                style="?android:listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin_top"
+                android:text="@string/time_text"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin_top"
+                android:paddingLeft="@dimen/horizontal_text_padding"
+                android:paddingRight="@dimen/horizontal_text_padding"
+                >
+
+                <EditText
+                    android:id="@+id/fromTime"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:enabled="false"
+                    android:gravity="center"
+                    android:hint="@string/start_time"/>
+
+                <TextView
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/to_text"/>
+
+                <EditText
+                    android:id="@+id/toTime"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    android:hint="@string/end_time"
+                    />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/default_margin_top"
-            android:paddingLeft="@dimen/horizontal_text_padding"
-            android:paddingRight="@dimen/horizontal_text_padding"
-            >
+            android:gravity="center">
 
-            <EditText
-                android:id="@+id/fromTime"
-                android:layout_width="@dimen/zero_dp"
+            <Button
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
                 android:enabled="false"
-                android:gravity="center"
-                android:hint="@string/start_time"/>
-
-            <TextView
-                android:layout_width="@dimen/zero_dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/to_text"/>
-
-            <EditText
-                android:id="@+id/toTime"
-                android:layout_width="@dimen/zero_dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:gravity="center"
-                android:hint="@string/end_time"
-                />
-
+                android:text="@string/done_button"/>
 
         </LinearLayout>
 
 
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center">
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:text="@string/done_button"/>
-
-    </LinearLayout>
-
-
-</LinearLayout>
+</ScrollView>
