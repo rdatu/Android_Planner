@@ -64,6 +64,7 @@ public class ListPlannerFragment extends ListFragment {
         super.onCreate(savedInstanceState);
         ListFragmentAdapter adapter = new ListFragmentAdapter(TIME_SLOT);
         setListAdapter(adapter);
+        
     }
 
     @Override

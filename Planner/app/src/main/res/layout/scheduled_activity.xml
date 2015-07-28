@@ -140,9 +140,9 @@
             android:gravity="center">
 
             <Button
+                android:id="@+id/doneButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="false"
                 android:text="@string/done_button"/>
 
         </LinearLayout>

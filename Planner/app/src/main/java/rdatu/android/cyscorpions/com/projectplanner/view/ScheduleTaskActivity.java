@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,9 +20,11 @@ import rdatu.android.cyscorpions.com.projectplanner.model.Tasks;
  */
 public class ScheduleTaskActivity extends FragmentActivity implements DatePickerFragment.Callbacks, TimePickerFragment.Callbacks {
 
+    private final String PRIORITY_HIGH = "HIGH";
+    private final String PRIORITY_LOW = "LOW";
     private String mTimeStart, mTimeEnd, mDateSelected;
     private EditText mFromTimeText, mToTimeText, mTaskNameText, mTaskDescriptionText, mPlaceText;
-    private Button mDateButton, mDoneButton;
+    private Button mDateButton, mDoneButton, mPriorityButton;
     private TaskManager mTaskManager;
 
     @Override
@@ -68,17 +71,31 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
         mTaskDescriptionText = (EditText) findViewById(R.id.inputDescription);
         mPlaceText = (EditText) findViewById(R.id.inputPlace);
 
+        mPriorityButton = (Button) findViewById(R.id.priority_button);
+        mPriorityButton.setText(PRIORITY_HIGH);
+        mPriorityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String p = mPriorityButton.getText().toString();
+                if (p.equals(PRIORITY_HIGH)) {
+                    mPriorityButton.setText(PRIORITY_LOW);
+                } else if (p.equals(PRIORITY_LOW)) {
+                    mPriorityButton.setText(PRIORITY_HIGH);
+                }
+            }
+        });
         mDoneButton = (Button) findViewById(R.id.doneButton);
         mDoneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (areFieldsFilled()) {
-                    String name, descr, date, time, place;
+                    String name, descr, date, time, place, priority;
                     name = mTaskNameText.getText().toString();
                     descr = mTaskDescriptionText.getText().toString();
                     date = mDateButton.getText().toString();
                     time = mTimeStart + " - " + mTimeEnd;
                     place = mPlaceText.getText().toString();
+                    priority = mPriorityButton.getText().toString();
 
                     Tasks task = new Tasks();
                     task.setDate(date);
@@ -86,12 +103,13 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
                     task.setTaskName(name);
                     task.setDescription(descr);
                     task.setPlace(place);
+                    task.setPriority(priority);
                     mTaskManager.saveTask(task);
 
                     Toast.makeText(getApplicationContext(), "TODO: Confirmation Dialog\nSaved: " + mTaskManager.getTasks().size(), Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "All fields are required.", Toast.LENGTH_SHORT).show();
-                    
+
                 }
 
 
@@ -125,14 +143,30 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
     }
 
     private boolean areFieldsFilled() {
-        boolean ready = false;
-        ready = !mTaskNameText.getText().toString().equals(null);
-        ready = !mTaskDescriptionText.getText().toString().equals(null);
-        ready = !mPlaceText.getText().toString().equals(null);
-        ready = !mToTimeText.getText().toString().equals(null);
-        ready = !mFromTimeText.getText().toString().equals(null);
-        ready = !mDateButton.getText().toString().equals(null);
+        boolean ready = true;
+
+        ready = isNotEmpty(mTaskNameText);
+        ready = isNotEmpty(mTaskDescriptionText);
+        ready = isNotEmpty(mPlaceText);
+
+        if (TextUtils.isEmpty(mFromTimeText.getText().toString()))
+            ready = false;
+        if (TextUtils.isEmpty(mToTimeText.getText().toString()))
+            ready = false;
+        if (TextUtils.isEmpty(mDateButton.getText().toString()))
+            ready = false;
 
         return ready;
     }
+
+    private boolean isNotEmpty(EditText item) {
+        if (TextUtils.isEmpty(item.getText().toString())) {
+            item.setError("This item must not be Empty");
+            return false;
+        }
+        return true;
+
+    }
+
+
 }

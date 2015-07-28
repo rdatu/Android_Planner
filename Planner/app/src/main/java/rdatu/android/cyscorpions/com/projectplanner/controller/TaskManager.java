@@ -1,6 +1,7 @@
 package rdatu.android.cyscorpions.com.projectplanner.controller;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -25,7 +26,7 @@ public class TaskManager {
         try {
             loadTasks();
         } catch (Exception e) {
-
+            Log.d("Planner", e.toString());
         }
     }
 
@@ -50,6 +51,7 @@ public class TaskManager {
 
     public void saveTask(Tasks task) {
         mTasks.add(task);
+        mHelper.insertTasks(task.getTaskName(), task.getDescription(), task.getPlace(), task.getDate(), task.getTimeSlot(), task.getPriority());
     }
 
     public ArrayList<Tasks> getTasks() {
