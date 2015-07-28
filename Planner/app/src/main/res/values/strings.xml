@@ -13,4 +13,5 @@
     <string name="start_time">Starting</string>
     <string name="date">Date</string>
     <string name="priority_text">Priority</string>
+    <string name="place">Place</string>
 </resources>
