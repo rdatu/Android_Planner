@@ -7,7 +7,7 @@ import java.util.UUID;
  */
 public class Tasks {
     private UUID mId;
-    private String mTaskName, mDescription, mTimeSlot, mDate, mPlace;
+    private String mTaskName, mDescription, mTimeSlot, mDate, mPlace, mPriority;
 
     public Tasks() {
         mId = UUID.randomUUID();
@@ -15,6 +15,14 @@ public class Tasks {
 
     public UUID getId() {
         return mId;
+    }
+
+    public String getPriority() {
+        return mPriority;
+    }
+
+    public void setPriority(String priority) {
+        mPriority = priority;
     }
 
     public String getTaskName() {

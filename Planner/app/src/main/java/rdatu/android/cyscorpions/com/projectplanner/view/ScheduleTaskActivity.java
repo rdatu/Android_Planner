@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import rdatu.android.cyscorpions.com.projectplanner.R;
+import rdatu.android.cyscorpions.com.projectplanner.controller.TaskManager;
 import rdatu.android.cyscorpions.com.projectplanner.model.Tasks;
 
 /**
@@ -21,12 +22,16 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
     private String mTimeStart, mTimeEnd, mDateSelected;
     private EditText mFromTimeText, mToTimeText, mTaskNameText, mTaskDescriptionText, mPlaceText;
     private Button mDateButton, mDoneButton;
+    private TaskManager mTaskManager;
 
     @Override
     @TargetApi(11)
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scheduled_activity);
+
+        mTaskManager = TaskManager.get(getApplicationContext());
+
         mDateSelected = getIntent().getStringExtra(ListPlannerActivity.EXTRA_DATE_SELECTED);
         String timeSelected = getIntent().getStringExtra(ListPlannerActivity.EXTRA_TIME_SELECTED);
         if (!timeSelected.equals(null)) {
@@ -67,21 +72,27 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
         mDoneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name, descr, date, time, place;
-                name = mTaskNameText.getText().toString();
-                descr = mTaskDescriptionText.getText().toString();
-                date = mDateButton.getText().toString();
-                time = mTimeStart + " - " + mTimeEnd;
-                place = mPlaceText.getText().toString();
+                if (areFieldsFilled()) {
+                    String name, descr, date, time, place;
+                    name = mTaskNameText.getText().toString();
+                    descr = mTaskDescriptionText.getText().toString();
+                    date = mDateButton.getText().toString();
+                    time = mTimeStart + " - " + mTimeEnd;
+                    place = mPlaceText.getText().toString();
 
-                Tasks task = new Tasks();
-                task.setDate(date);
-                task.setTimeSlot(time);
-                task.setTaskName(name);
-                task.setDescription(descr);
-                task.setPlace(place);
+                    Tasks task = new Tasks();
+                    task.setDate(date);
+                    task.setTimeSlot(time);
+                    task.setTaskName(name);
+                    task.setDescription(descr);
+                    task.setPlace(place);
+                    mTaskManager.saveTask(task);
 
-                Toast.makeText(getApplicationContext(), "TODO: Confirmation Dialog", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "TODO: Confirmation Dialog\nSaved: " + mTaskManager.getTasks().size(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "All fields are required.", Toast.LENGTH_SHORT).show();
+                    
+                }
 
 
             }
@@ -111,5 +122,17 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
     @Override
     public void onDateChanged(String date) {
         mDateButton.setText(date);
+    }
+
+    private boolean areFieldsFilled() {
+        boolean ready = false;
+        ready = !mTaskNameText.getText().toString().equals(null);
+        ready = !mTaskDescriptionText.getText().toString().equals(null);
+        ready = !mPlaceText.getText().toString().equals(null);
+        ready = !mToTimeText.getText().toString().equals(null);
+        ready = !mFromTimeText.getText().toString().equals(null);
+        ready = !mDateButton.getText().toString().equals(null);
+
+        return ready;
     }
 }
