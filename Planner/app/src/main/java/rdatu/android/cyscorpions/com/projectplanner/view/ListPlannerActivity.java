@@ -28,7 +28,7 @@ public class ListPlannerActivity extends FragmentActivity implements ListPlanner
     @SuppressWarnings("deprecation")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
         final ListPlannerFragment[] LIST_PLANNER = new ListPlannerFragment[3];
         Calendar prevDay, nextDay;
 
@@ -44,9 +44,9 @@ public class ListPlannerActivity extends FragmentActivity implements ListPlanner
         prevDay.add(Calendar.DAY_OF_MONTH, -1);
         nextDay.add(Calendar.DAY_OF_MONTH, 1);
 
-        LIST_PLANNER[0] = ListPlannerFragment.newInstance(prevDay);
-        LIST_PLANNER[1] = ListPlannerFragment.newInstance(mCurrentCalendar);
-        LIST_PLANNER[2] = ListPlannerFragment.newInstance(nextDay);
+        LIST_PLANNER[0] = ListPlannerFragment.newInstance(prevDay, getApplicationContext());
+        LIST_PLANNER[1] = ListPlannerFragment.newInstance(mCurrentCalendar, getApplicationContext());
+        LIST_PLANNER[2] = ListPlannerFragment.newInstance(nextDay, getApplicationContext());
 
         PlannerPagerAdapter adapter = new PlannerPagerAdapter(getSupportFragmentManager(), LIST_PLANNER);
 

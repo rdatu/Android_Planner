@@ -2,20 +2,28 @@ package rdatu.android.cyscorpions.com.projectplanner.view;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import rdatu.android.cyscorpions.com.projectplanner.R;
+import rdatu.android.cyscorpions.com.projectplanner.controller.TaskManager;
+import rdatu.android.cyscorpions.com.projectplanner.model.Tasks;
 
 /**
  * Created by rayeldatu on 7/27/15.
@@ -37,17 +45,21 @@ public class ListPlannerFragment extends ListFragment {
             "20:00 - 21:00", "21:00 - 22:00",
             "22:00 - 23:00", "23:00 - 00:00",
     };
+    private TaskManager mTaskManager;
     private Calendar mCalendar;
     private TextView mTextTask, mTimeSlot;
     private Callbacks mCallbacks;
+    private Context mAppContext;
 
-    public ListPlannerFragment(Calendar a) {
+    public ListPlannerFragment(Calendar a, Context c) {
         mCalendar = a;
+        mAppContext = c;
+        mTaskManager = TaskManager.get(mAppContext);
 
     }
 
-    public static ListPlannerFragment newInstance(Calendar a) {
-        return new ListPlannerFragment(a);
+    public static ListPlannerFragment newInstance(Calendar a, Context c) {
+        return new ListPlannerFragment(a, c);
     }
 
     @Override
@@ -64,7 +76,31 @@ public class ListPlannerFragment extends ListFragment {
         super.onCreate(savedInstanceState);
         ListFragmentAdapter adapter = new ListFragmentAdapter(TIME_SLOT);
         setListAdapter(adapter);
-        
+        setHasOptionsMenu(true);
+
+
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.planner_menu, menu);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_refresh:
+                ArrayList<Tasks> tasks;
+                tasks = mTaskManager.getTasks();
+                Toast.makeText(getActivity().getApplicationContext(), tasks.size() + "", Toast.LENGTH_SHORT).show();
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
     }
 
     @Override
