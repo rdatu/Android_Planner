@@ -18,23 +18,38 @@ public class TaskManager {
     private Context mAppContext;
     private TasksDatabaseHelper mHelper;
     private ArrayList<Tasks> mTasks;
+    private Tasks mLoadedTask;
 
-    private TaskManager(Context context) {
+    private TaskManager(Context context, boolean all) {
         mAppContext = context;
         mHelper = new TasksDatabaseHelper(mAppContext);
 
         try {
-            loadTasks();
+            if (all) {
+                loadTasks();
+            } else {
+                //loadSingleTask();
+            }
+
         } catch (Exception e) {
             Log.d("Planner", e.toString());
         }
     }
 
-    public static TaskManager get(Context c) {
+    public static TaskManager get(Context c, boolean all) {
         if (sTaskManager == null) {
-            sTaskManager = new TaskManager(c.getApplicationContext());
+            sTaskManager = new TaskManager(c.getApplicationContext(), all);
         }
         return sTaskManager;
+    }
+
+    public void loadSingleTask(String date, String fromTime) {
+        TaskCursor cursor = mHelper.queryTaskForDate(date, fromTime);
+        mLoadedTask = cursor.getSpecificTask();
+    }
+
+    public Tasks getLoadedTask() {
+        return mLoadedTask;
     }
 
     private void loadTasks() {
@@ -48,10 +63,13 @@ public class TaskManager {
         }
     }
 
-
     public void saveTask(Tasks task) {
         mTasks.add(task);
         mHelper.insertTasks(task.getTaskName(), task.getDescription(), task.getPlace(), task.getDate(), task.getTimeSlot(), task.getPriority());
+    }
+
+    public void deleteAllTasks() {
+        mHelper.deleteAll();
     }
 
     public ArrayList<Tasks> getTasks() {

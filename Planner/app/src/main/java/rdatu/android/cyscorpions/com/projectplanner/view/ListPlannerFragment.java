@@ -3,6 +3,7 @@ package rdatu.android.cyscorpions.com.projectplanner.view;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import rdatu.android.cyscorpions.com.projectplanner.R;
 import rdatu.android.cyscorpions.com.projectplanner.controller.TaskManager;
@@ -50,12 +52,15 @@ public class ListPlannerFragment extends ListFragment {
     private TextView mTextTask, mTimeSlot;
     private Callbacks mCallbacks;
     private Context mAppContext;
+    private ArrayList<Tasks> mListTasks;
+
 
     public ListPlannerFragment(Calendar a, Context c) {
         mCalendar = a;
         mAppContext = c;
-        mTaskManager = TaskManager.get(mAppContext);
-
+        mTaskManager = TaskManager.get(mAppContext, true);
+        PopulateList backgroundTask = new PopulateList();
+        backgroundTask.execute();
     }
 
     public static ListPlannerFragment newInstance(Calendar a, Context c) {
@@ -69,7 +74,6 @@ public class ListPlannerFragment extends ListFragment {
         mCallbacks.onListUpdate(getStringDate());
         Log.d(TAG, "onAttach successful..." + " : " + (mCalendar == null) + ", " + getStringDate());
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -94,7 +98,12 @@ public class ListPlannerFragment extends ListFragment {
             case R.id.menu_item_refresh:
                 ArrayList<Tasks> tasks;
                 tasks = mTaskManager.getTasks();
-                Toast.makeText(getActivity().getApplicationContext(), tasks.size() + "", Toast.LENGTH_SHORT).show();
+                mTaskManager.deleteAllTasks();
+                Toast.makeText(getActivity().getApplicationContext(), "Number of Tasks Deleted: " + tasks.size(), Toast.LENGTH_SHORT).show();
+                tasks.clear();
+                tasks = mTaskManager.getTasks();
+                Toast.makeText(getActivity().getApplicationContext(), "Number of Tasks: " + tasks.size(), Toast.LENGTH_SHORT).show();
+
 
                 return true;
             default:
@@ -150,6 +159,35 @@ public class ListPlannerFragment extends ListFragment {
         void onTimeSlotSelected(String time, String date);
     }
 
+    private class PopulateList extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            for (int i = 0; i < 24; i++) {
+
+                Tasks task = null;
+                SimpleDateFormat df = new SimpleDateFormat("kk:mm");
+                Date date = null;
+                try {
+                    date = df.parse("" + i + ":00");
+                } catch (Exception e) {
+
+                }
+                try {
+                    mTaskManager.loadSingleTask(getActivity().getTitle().toString(), date.toString());
+                    mListTasks.add(mTaskManager.getLoadedTask());
+                } catch (Exception e) {
+                    Log.d("Planner", e.toString());
+                }
+
+
+            }
+
+            return null;
+        }
+    }
+
     private class ListFragmentAdapter extends ArrayAdapter<String> {
 
 
@@ -173,6 +211,4 @@ public class ListPlannerFragment extends ListFragment {
             return convertView;
         }
     }
-
-
 }
