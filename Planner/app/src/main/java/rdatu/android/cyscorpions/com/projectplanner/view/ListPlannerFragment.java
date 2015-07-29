@@ -105,6 +105,7 @@ public class ListPlannerFragment extends ListFragment {
                 tasks.clear();
                 tasks = mTaskManager.getTasks();
                 Toast.makeText(getActivity().getApplicationContext(), "Number of Tasks: " + tasks.size(), Toast.LENGTH_SHORT).show();
+                getListView().invalidateViews();
 
 
                 return true;
@@ -185,6 +186,7 @@ public class ListPlannerFragment extends ListFragment {
             }
 
             mListTasks = new ArrayList<>();
+            mListTasks.clear();
             mListTasks = mTaskManager.getTasks();
 
             String time = getItem(position);
@@ -192,25 +194,23 @@ public class ListPlannerFragment extends ListFragment {
             mTimeSlot = (TextView) convertView.findViewById(R.id.time_slot);
             mTimeSlot.setText(time);
             mTextTask = (TextView) convertView.findViewById(R.id.task_name);
+            mTextTask.setText(getString(R.string.default_task_text));
+
 
             try {
-                int counter = 1;
+                mTextTask.setText(getString(R.string.default_task_text));
                 for (Tasks t : mListTasks) {
                     if (t.getDate().equals(getActivity().getTitle().toString())) {
                         if (t.getTimeSlot().equals(mTimeSlot.getText().toString())) {
                             mTextTask.setText(t.getTaskName());
+
                             break;
                         } else {
                             mTextTask.setText(getString(R.string.default_task_text));
-
                         }
                     } else {
                         mTextTask.setText(getString(R.string.default_task_text));
                     }
-
-
-                    Log.d("Planner", counter + "");
-                    counter++;
                 }
             } catch (Exception e) {
                 Log.e("Planner", "Error", e);

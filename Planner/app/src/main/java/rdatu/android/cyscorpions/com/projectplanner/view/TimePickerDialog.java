@@ -2,7 +2,6 @@ package rdatu.android.cyscorpions.com.projectplanner.view;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -15,20 +14,20 @@ import java.util.Date;
 /**
  * Created by rayeldatu on 7/28/15.
  */
-public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
+public class TimePickerDialog extends DialogFragment implements android.app.TimePickerDialog.OnTimeSetListener {
 
     public static final String EXTRA_TIME = "time";
     private String mStringTime;
     private Callbacks mCallbacks;
 
 
-    public TimePickerFragment() {
+    public TimePickerDialog() {
     }
 
 
-    public static TimePickerFragment newInstance(String time) {
+    public static TimePickerDialog newInstance(String time) {
         Bundle args = new Bundle();
-        TimePickerFragment fragment = new TimePickerFragment();
+        TimePickerDialog fragment = new TimePickerDialog();
         args.putSerializable(EXTRA_TIME, time);
         fragment.setArguments(args);
 
@@ -62,7 +61,7 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
 
-        return new TimePickerDialog(getActivity(), this, hour, minute, true);
+        return new android.app.TimePickerDialog(getActivity(), this, hour, minute, true);
     }
 
     @Override

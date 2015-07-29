@@ -50,6 +50,7 @@ public class TaskManager {
             Log.d("Planner", mLoadedTask.toString());
         } else
             mLoadedTask = null;
+        cursor.close();
     }
 
     public Tasks getLoadedTask(String date) {
@@ -66,6 +67,7 @@ public class TaskManager {
         } else {
             mTasks = new ArrayList<Tasks>();
         }
+        cursor.close();
     }
 
     public void saveTask(Tasks task) {
@@ -76,6 +78,25 @@ public class TaskManager {
     public void deleteAllTasks() {
         mHelper.deleteAll();
     }
+
+    public void updateTasks(String name, String descr, String time, String date, String place, String priority) {
+        mHelper.updateTask(name, descr, time, date, place, priority);
+    }
+
+    public boolean checkIfTasksExsists(String date, String time) {
+        TaskCursor cursor = mHelper.queryTask(date, time);
+        Log.d("Planner", cursor.getCount() + " is the size");
+        if (cursor.getCount() > 0) {
+            cursor.close();
+            return true;
+
+        } else {
+            cursor.close();
+            return false;
+        }
+
+    }
+
 
     public ArrayList<Tasks> getTasks() {
         return mTasks;

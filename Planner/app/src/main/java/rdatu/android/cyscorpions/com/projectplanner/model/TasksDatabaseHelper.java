@@ -32,7 +32,7 @@ public class TasksDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table tasks (_id integer primary key autoincrement, task_date varchar(30),task_time varchar(15), task_name varchar(100), task_description varchar(200), task_place varchar(100),task_priority varchar(10))");
+        db.execSQL("create table tasks (task_date varchar(30),task_time varchar(15), task_name varchar(100), task_description varchar(200), task_place varchar(100),task_priority varchar(10))");
         mDatabase = db;
     }
 
@@ -51,15 +51,26 @@ public class TasksDatabaseHelper extends SQLiteOpenHelper {
         getWritableDatabase().delete(TABLE_TASKS, null, null);
     }
 
+    public void updateTask(String name, String descr, String time, String date, String place, String priority) {
+
+        Cursor cursor = getWritableDatabase().rawQuery("UPDATE tasks SET task_name = ?, task_date=?,task_time=?,task_description=?,task_place=?,task_priority=? WHERE task_date=? AND task_time =?", new String[]{name, date, time, descr, place, priority, date, time});
+
+    }
+
     public TaskCursor queryTaskForDate(String date) {
         Cursor wrapped = getReadableDatabase().rawQuery("SELECT * FROM tasks WHERE task_date= '" + date + "'", null);
-        //Cursor wrapped = getReadableDatabase().query(TABLE_TASKS, new String[]{COLUMN_DATE, COLUMN_TIMESLOT, COLUMN_TASK_NAME, COLUMN_TASK_DESC, COLUMN_PLACE, COLUMN_PRIORITY}, COLUMN_DATE + " = '?' ", new String[]{date}, null, null, null);
+
 
         return new TaskCursor(wrapped);
     }
 
     public TaskCursor queryTask() {
         Cursor wrapped = getReadableDatabase().query(TABLE_TASKS, null, null, null, null, null, null);
+        return new TaskCursor(wrapped);
+    }
+
+    public TaskCursor queryTask(String date, String time) {
+        Cursor wrapped = getReadableDatabase().rawQuery("SELECT * FROM tasks WHERE task_date ='" + date + "' AND task_time ='" + time + "'", null);
         return new TaskCursor(wrapped);
     }
 

@@ -1,6 +1,7 @@
 package rdatu.android.cyscorpions.com.projectplanner.view;
 
 import android.annotation.TargetApi;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import rdatu.android.cyscorpions.com.projectplanner.R;
@@ -22,14 +24,19 @@ import rdatu.android.cyscorpions.com.projectplanner.model.Tasks;
 /**
  * Created by rayeldatu on 7/27/15.
  */
-public class ScheduleTaskActivity extends FragmentActivity implements DatePickerFragment.Callbacks, TimePickerFragment.Callbacks {
+public class ScheduleTaskActivity extends FragmentActivity implements DatePickerDialog.Callbacks, TimePickerDialog.Callbacks, OverwriteDialog.Callbacks {
 
     private final String PRIORITY_HIGH = "HIGH";
     private final String PRIORITY_LOW = "LOW";
+    private final int COLOR_HIGH = Color.RED;
+    private final int COLOR_LOW = Color.GREEN;
+
     private String mTimeStart, mTimeEnd, mDateSelected;
     private EditText mFromTimeText, mToTimeText, mTaskNameText, mTaskDescriptionText, mPlaceText;
     private Button mDateButton, mDoneButton, mPriorityButton;
     private TaskManager mTaskManager;
+    private ArrayList<Tasks> mListTasks;
+
 
     @Override
     @TargetApi(11)
@@ -93,7 +100,7 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
             @Override
             public void onClick(View v) {
                 if (areFieldsFilled()) {
-                    String name, descr, date, place, priority;
+                    String name, descr, date, place, priority, time;
                     int interval;
                     int timeStart, timeEnd;
 
@@ -109,27 +116,34 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
                     place = mPlaceText.getText().toString();
                     priority = mPriorityButton.getText().toString();
 
-                    Log.d("Planner", timeStart + " < " + (timeEnd - 1));
-
 
                     for (int i = timeStart; i < timeEnd; i++) {
                         try {
+
                             Tasks task = new Tasks();
                             dStart = df.parse(i + ":00");
                             dEnd = df.parse((i + 1) + ":00");
-                            Log.d("Planner", df.format(dStart) + " - " + df.format(dEnd));
-                            task.setDate(date);
-                            task.setTaskName(name);
-                            task.setDescription(descr);
-                            task.setPlace(place);
-                            task.setPriority(priority);
-                            task.setTimeSlot(df.format(dStart) + " - " + df.format(dEnd));
-                            mTaskManager.saveTask(task);
+                            time = df.format(dStart) + " - " + df.format(dEnd);
+
+                            if (mTaskManager.checkIfTasksExsists(date, time)) {
+                                //TODO Overwrite
+                                showOverwriteDialog(name, descr, time, date, place, priority);
+
+                            } else {
+                                task.setDate(date);
+                                task.setTaskName(name);
+                                task.setDescription(descr);
+                                task.setPlace(place);
+                                task.setPriority(priority);
+                                task.setTimeSlot(time);
+                                mTaskManager.saveTask(task);
+                            }
+
+
                         } catch (Exception e) {
-                            Log.d("Planner", "Something went wrong!");
+                            Log.e("Planner", "Something went wrong!", e);
                         }
                     }
-
 
                     Toast.makeText(getApplicationContext(), "TODO: Confirmation Dialog\nSaved: " + mTaskManager.getTasks().size(), Toast.LENGTH_SHORT).show();
                 } else {
@@ -141,19 +155,25 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
             }
         });
 
-    }
 
+    }
 
     private void showDatePicker() {
         FragmentManager fm = getSupportFragmentManager();
-        DatePickerFragment dialog = DatePickerFragment.newInstance(mDateButton.getText().toString());
+        DatePickerDialog dialog = DatePickerDialog.newInstance(mDateButton.getText().toString());
         dialog.show(fm, "datePicker");
     }
 
     private void showTimePicker() {
         FragmentManager fm = getSupportFragmentManager();
-        TimePickerFragment dialog = TimePickerFragment.newInstance(mToTimeText.getText().toString());
+        TimePickerDialog dialog = TimePickerDialog.newInstance(mToTimeText.getText().toString());
         dialog.show(fm, "timePicker");
+    }
+
+    private void showOverwriteDialog(String name, String descr, String time, String date, String place, String priority) {
+        FragmentManager fm = getSupportFragmentManager();
+        OverwriteDialog dialog = OverwriteDialog.newInstance(name, descr, time, date, place, priority);
+        dialog.show(fm, "overWrite");
     }
 
     @Override
@@ -191,8 +211,12 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
             return false;
         }
         return true;
-
     }
 
 
+    @Override
+    public void onOverwrite(String name, String descr, String time, String date, String place, String priority) {
+        mTaskManager.updateTasks(name, descr, time, date, place, priority);
+        Log.d("Planner", "Update Done");
+    }
 }

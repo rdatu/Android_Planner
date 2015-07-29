@@ -1,7 +1,6 @@
 package rdatu.android.cyscorpions.com.projectplanner.view;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -15,18 +14,18 @@ import java.util.Date;
 /**
  * Created by rayeldatu on 7/28/15.
  */
-public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+public class DatePickerDialog extends DialogFragment implements android.app.DatePickerDialog.OnDateSetListener {
 
     public static final String EXTRA_DATE = "date";
     private Callbacks mCallbacks;
     private String mStringDate;
 
-    public DatePickerFragment() {
+    public DatePickerDialog() {
 
     }
 
-    public static DatePickerFragment newInstance(String date) {
-        DatePickerFragment fragment = new DatePickerFragment();
+    public static DatePickerDialog newInstance(String date) {
+        DatePickerDialog fragment = new DatePickerDialog();
         Bundle args = new Bundle();
 
         args.putSerializable(EXTRA_DATE, date);
@@ -72,7 +71,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        return new DatePickerDialog(getActivity(), this, year, month, day);
+        return new android.app.DatePickerDialog(getActivity(), this, year, month, day);
     }
 
     public interface Callbacks {
