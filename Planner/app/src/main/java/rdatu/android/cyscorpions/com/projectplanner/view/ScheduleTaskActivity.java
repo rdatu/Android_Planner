@@ -6,10 +6,14 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import rdatu.android.cyscorpions.com.projectplanner.R;
 import rdatu.android.cyscorpions.com.projectplanner.controller.TaskManager;
@@ -89,22 +93,42 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
             @Override
             public void onClick(View v) {
                 if (areFieldsFilled()) {
-                    String name, descr, date, time, place, priority;
+                    String name, descr, date, place, priority;
+                    int interval;
+                    int timeStart, timeEnd;
+
+                    SimpleDateFormat df = new SimpleDateFormat("kk:mm");
+                    Date dStart, dEnd;
+                    dStart = dEnd = null;
                     name = mTaskNameText.getText().toString();
                     descr = mTaskDescriptionText.getText().toString();
                     date = mDateButton.getText().toString();
-                    time = mTimeStart + " - " + mTimeEnd;
+                    timeStart = Integer.parseInt(mTimeStart.substring(0, 2));
+                    timeEnd = Integer.parseInt(mTimeEnd.substring(0, 2));
+                    interval = Math.abs(timeStart - timeEnd);
                     place = mPlaceText.getText().toString();
                     priority = mPriorityButton.getText().toString();
 
-                    Tasks task = new Tasks();
-                    task.setDate(date);
-                    task.setTimeSlot(time);
-                    task.setTaskName(name);
-                    task.setDescription(descr);
-                    task.setPlace(place);
-                    task.setPriority(priority);
-                    mTaskManager.saveTask(task);
+                    Log.d("Planner", timeStart + " < " + (timeEnd - 1));
+
+
+                    for (int i = timeStart; i < timeEnd; i++) {
+                        try {
+                            Tasks task = new Tasks();
+                            dStart = df.parse(i + ":00");
+                            dEnd = df.parse((i + 1) + ":00");
+                            Log.d("Planner", df.format(dStart) + " - " + df.format(dEnd));
+                            task.setDate(date);
+                            task.setTaskName(name);
+                            task.setDescription(descr);
+                            task.setPlace(place);
+                            task.setPriority(priority);
+                            mTaskManager.saveTask(task);
+                        } catch (Exception e) {
+                            Log.d("Planner", "Something went wrong!");
+                        }
+                    }
+
 
                     Toast.makeText(getApplicationContext(), "TODO: Confirmation Dialog\nSaved: " + mTaskManager.getTasks().size(), Toast.LENGTH_SHORT).show();
                 } else {
@@ -134,12 +158,13 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
     @Override
     public void onTimeChanged(String time) {
         mToTimeText.setText(time);
-
+        mTimeEnd = mToTimeText.getText().toString();
     }
 
     @Override
     public void onDateChanged(String date) {
         mDateButton.setText(date);
+
     }
 
     private boolean areFieldsFilled() {

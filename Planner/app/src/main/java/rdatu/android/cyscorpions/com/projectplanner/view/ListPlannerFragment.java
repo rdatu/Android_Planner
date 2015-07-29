@@ -110,6 +110,7 @@ public class ListPlannerFragment extends ListFragment {
                 return super.onOptionsItemSelected(item);
         }
 
+
     }
 
     @Override
