@@ -64,4 +64,9 @@ public class Tasks {
     public void setPlace(String place) {
         mPlace = place;
     }
+
+    @Override
+    public String toString() {
+        return mTaskName;
+    }
 }

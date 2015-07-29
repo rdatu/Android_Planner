@@ -123,6 +123,7 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
                             task.setDescription(descr);
                             task.setPlace(place);
                             task.setPriority(priority);
+                            task.setTimeSlot(df.format(dStart) + " - " + df.format(dEnd));
                             mTaskManager.saveTask(task);
                         } catch (Exception e) {
                             Log.d("Planner", "Something went wrong!");

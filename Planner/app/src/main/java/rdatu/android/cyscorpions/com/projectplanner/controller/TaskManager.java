@@ -43,12 +43,17 @@ public class TaskManager {
         return sTaskManager;
     }
 
-    public void loadSingleTask(String date, String fromTime) {
-        TaskCursor cursor = mHelper.queryTaskForDate(date, fromTime);
-        mLoadedTask = cursor.getSpecificTask();
+    public void loadSingleTask(String date) {
+        TaskCursor cursor = mHelper.queryTaskForDate(date);
+        if (cursor.getSpecificTask() != null) {
+            mLoadedTask = cursor.getSpecificTask();
+            Log.d("Planner", mLoadedTask.toString());
+        } else
+            mLoadedTask = null;
     }
 
-    public Tasks getLoadedTask() {
+    public Tasks getLoadedTask(String date) {
+        loadSingleTask(date);
         return mLoadedTask;
     }
 

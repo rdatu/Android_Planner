@@ -3,7 +3,6 @@ package rdatu.android.cyscorpions.com.projectplanner.view;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -21,7 +20,6 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 import rdatu.android.cyscorpions.com.projectplanner.R;
 import rdatu.android.cyscorpions.com.projectplanner.controller.TaskManager;
@@ -34,7 +32,7 @@ public class ListPlannerFragment extends ListFragment {
 
     private static final String TAG = "Planner";
     private final String[] TIME_SLOT = {
-            "00:00 - 01:00", "01:00 - 02:00",
+            "24:00 - 01:00", "01:00 - 02:00",
             "02:00 - 03:00", "03:00 - 04:00",
             "04:00 - 05:00", "05:00 - 06:00",
             "06:00 - 07:00", "07:00 - 08:00",
@@ -45,8 +43,9 @@ public class ListPlannerFragment extends ListFragment {
             "16:00 - 17:00", "17:00 - 18:00",
             "18:00 - 19:00", "19:00 - 20:00",
             "20:00 - 21:00", "21:00 - 22:00",
-            "22:00 - 23:00", "23:00 - 00:00",
+            "22:00 - 23:00", "23:00 - 24:00",
     };
+
     private TaskManager mTaskManager;
     private Calendar mCalendar;
     private TextView mTextTask, mTimeSlot;
@@ -59,8 +58,7 @@ public class ListPlannerFragment extends ListFragment {
         mCalendar = a;
         mAppContext = c;
         mTaskManager = TaskManager.get(mAppContext, true);
-        PopulateList backgroundTask = new PopulateList();
-        backgroundTask.execute();
+
     }
 
     public static ListPlannerFragment newInstance(Calendar a, Context c) {
@@ -78,9 +76,13 @@ public class ListPlannerFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
+        //Log.d("Planner", "Activity: " + getActivity());
+        /*PopulateList backgroundTask = new PopulateList(getActivity());
+        backgroundTask.execute();*/
         ListFragmentAdapter adapter = new ListFragmentAdapter(TIME_SLOT);
         setListAdapter(adapter);
-        setHasOptionsMenu(true);
 
 
     }
@@ -129,6 +131,7 @@ public class ListPlannerFragment extends ListFragment {
             mCalendar.add(Calendar.DAY_OF_MONTH, 1);
         }
         mCallbacks.onListUpdate(getStringDate());
+        getListView().invalidateViews();
     }
 
     protected final void onPreviousDay() {
@@ -141,6 +144,8 @@ public class ListPlannerFragment extends ListFragment {
         }
         Log.d(TAG, (mCallbacks == null) + "////" + (mCalendar == null));
         mCallbacks.onListUpdate(getStringDate());
+        getListView().invalidateViews();
+
     }
 
     private String getStringDate() {
@@ -154,40 +159,17 @@ public class ListPlannerFragment extends ListFragment {
         mCallbacks.onTimeSlotSelected(time, getActivity().getTitle().toString());
     }
 
+    public void onResume() {
+        super.onResume();
+        getListView().invalidateViews();
+    }
+
     public interface Callbacks {
         void onListUpdate(String date);
 
         void onTimeSlotSelected(String time, String date);
     }
 
-    private class PopulateList extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... params) {
-
-            for (int i = 0; i < 24; i++) {
-
-                Tasks task = null;
-                SimpleDateFormat df = new SimpleDateFormat("kk:mm");
-                Date date = null;
-                try {
-                    date = df.parse("" + i + ":00");
-                } catch (Exception e) {
-
-                }
-                try {
-                    mTaskManager.loadSingleTask(getActivity().getTitle().toString(), date.toString());
-                    mListTasks.add(mTaskManager.getLoadedTask());
-                } catch (Exception e) {
-                    Log.d("Planner", e.toString());
-                }
-
-
-            }
-
-            return null;
-        }
-    }
 
     private class ListFragmentAdapter extends ArrayAdapter<String> {
 
@@ -202,12 +184,39 @@ public class ListPlannerFragment extends ListFragment {
                 convertView = getActivity().getLayoutInflater().inflate(R.layout.daily_list_item, null);
             }
 
+            mListTasks = new ArrayList<>();
+            mListTasks = mTaskManager.getTasks();
+
             String time = getItem(position);
 
             mTimeSlot = (TextView) convertView.findViewById(R.id.time_slot);
             mTimeSlot.setText(time);
             mTextTask = (TextView) convertView.findViewById(R.id.task_name);
-            mTextTask.setText(getString(R.string.default_task_text));
+
+            try {
+                int counter = 1;
+                for (Tasks t : mListTasks) {
+                    if (t.getDate().equals(getActivity().getTitle().toString())) {
+                        if (t.getTimeSlot().equals(mTimeSlot.getText().toString())) {
+                            mTextTask.setText(t.getTaskName());
+                            break;
+                        } else {
+                            mTextTask.setText(getString(R.string.default_task_text));
+
+                        }
+                    } else {
+                        mTextTask.setText(getString(R.string.default_task_text));
+                    }
+
+
+                    Log.d("Planner", counter + "");
+                    counter++;
+                }
+            } catch (Exception e) {
+                Log.e("Planner", "Error", e);
+
+            }
+
 
             return convertView;
         }

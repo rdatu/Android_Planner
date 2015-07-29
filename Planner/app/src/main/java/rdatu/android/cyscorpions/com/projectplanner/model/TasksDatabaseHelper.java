@@ -51,8 +51,9 @@ public class TasksDatabaseHelper extends SQLiteOpenHelper {
         getWritableDatabase().delete(TABLE_TASKS, null, null);
     }
 
-    public TaskCursor queryTaskForDate(String date, String time) {
-        Cursor wrapped = getReadableDatabase().query(TABLE_TASKS, new String[]{COLUMN_DATE, COLUMN_TIMESLOT, COLUMN_TASK_NAME, COLUMN_TASK_DESC, COLUMN_PLACE, COLUMN_PRIORITY}, COLUMN_DATE + " = ? AND " + COLUMN_TIMESLOT + " LIKE '" + "?" + "%'", new String[]{date, time}, null, null, null);
+    public TaskCursor queryTaskForDate(String date) {
+        Cursor wrapped = getReadableDatabase().rawQuery("SELECT * FROM tasks WHERE task_date= '" + date + "'", null);
+        //Cursor wrapped = getReadableDatabase().query(TABLE_TASKS, new String[]{COLUMN_DATE, COLUMN_TIMESLOT, COLUMN_TASK_NAME, COLUMN_TASK_DESC, COLUMN_PLACE, COLUMN_PRIORITY}, COLUMN_DATE + " = '?' ", new String[]{date}, null, null, null);
 
         return new TaskCursor(wrapped);
     }
