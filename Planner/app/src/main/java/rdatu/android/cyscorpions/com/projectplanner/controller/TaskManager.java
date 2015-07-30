@@ -79,6 +79,10 @@ public class TaskManager {
         mHelper.deleteAll();
     }
 
+    public void deleteEntry(String date, String time) {
+        mHelper.deleteWithCondition(date, time);
+    }
+
     public void updateTasks(String name, String descr, String time, String date, String place, String priority) {
         mHelper.updateTask(name, descr, time, date, place, priority);
     }

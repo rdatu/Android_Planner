@@ -113,10 +113,14 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
                     date = mDateButton.getText().toString();
                     timeStart = Integer.parseInt(mTimeStart.substring(0, 2));
                     timeEnd = Integer.parseInt(mTimeEnd.substring(0, 2));
-                    interval = Math.abs(timeStart - timeEnd);
+                    interval = (timeStart - timeEnd) * -1;
                     place = mPlaceText.getText().toString();
                     priority = mPriorityButton.getText().toString();
 
+                    if (interval < 0) {
+                        Toast.makeText(getApplicationContext(), "Please choose a time within the 24-hour", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
                     for (int i = timeStart; i < timeEnd; i++) {
                         try {
@@ -129,7 +133,7 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
                             if (mTaskManager.checkIfTasksExsists(date, time)) {
                                 //TODO Overwrite
                                 showOverwriteDialog(name, descr, time, date, place, priority);
-
+                                finish();
                             } else {
                                 task.setDate(date);
                                 task.setTaskName(name);
@@ -138,6 +142,7 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
                                 task.setPriority(priority);
                                 task.setTimeSlot(time);
                                 mTaskManager.saveTask(task);
+                                finish();
                             }
 
 
@@ -146,7 +151,6 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
                         }
                     }
 
-                    Toast.makeText(getApplicationContext(), "TODO: Confirmation Dialog\nSaved: " + mTaskManager.getTasks().size(), Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "All fields are required.", Toast.LENGTH_SHORT).show();
 

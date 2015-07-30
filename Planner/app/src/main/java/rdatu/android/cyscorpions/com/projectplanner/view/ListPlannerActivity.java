@@ -152,7 +152,6 @@ public class ListPlannerActivity extends FragmentActivity implements ListPlanner
     @TargetApi(11)
     @Override
     public void onJumpTo(String date) {
-
         Intent i = getIntent();
         i.putExtra(EXTRA_NEWDATE, date);
         finish();
