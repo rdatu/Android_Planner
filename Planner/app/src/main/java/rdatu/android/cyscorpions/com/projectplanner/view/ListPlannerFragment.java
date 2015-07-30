@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -49,8 +50,9 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
     };
 
     private TaskManager mTaskManager;
+    private LinearLayout mLayout;
     private Calendar mCalendar;
-    private TextView mTextTask, mTimeSlot, mPriority, mDescription;
+    private TextView mTextTask, mTimeSlot, mDescription;
     private Callbacks mCallbacks;
     private Context mAppContext;
     private ArrayList<Tasks> mListTasks;
@@ -267,6 +269,10 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
             mTimeSlot.setText(time);
             mTextTask = (TextView) convertView.findViewById(R.id.task_name);
             mTextTask.setText(getString(R.string.default_task_text));
+            mDescription = (TextView) convertView.findViewById(R.id.task_description);
+            mDescription.setText("No Description");
+            mLayout = (LinearLayout) convertView.findViewById(R.id.list_item_back);
+
 
             try {
                 mTextTask.setText(getString(R.string.default_task_text));
@@ -274,6 +280,13 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
                     if (t.getDate().equals(getActivity().getTitle().toString())) {
                         if (t.getTimeSlot().equals(mTimeSlot.getText().toString())) {
                             mTextTask.setText(t.getTaskName());
+                            mDescription.setText(t.getDescription());
+                            /*if (t.getPriority().equals("HIGH")) {
+
+                                mLayout.setBackgroundColor(Color.RED);
+                            } else {
+                                mLayout.setBackgroundColor(Color.WHITE);
+                            }*/
                             break;
                         } else {
                             mTextTask.setText(getString(R.string.default_task_text));
