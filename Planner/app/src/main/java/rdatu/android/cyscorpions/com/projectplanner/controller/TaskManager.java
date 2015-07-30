@@ -43,18 +43,8 @@ public class TaskManager {
         return sTaskManager;
     }
 
-    public void loadSingleTask(String date) {
-        TaskCursor cursor = mHelper.queryTaskForDate(date);
-        if (cursor.getSpecificTask() != null) {
-            mLoadedTask = cursor.getSpecificTask();
-            Log.d("Planner", mLoadedTask.toString());
-        } else
-            mLoadedTask = null;
-        cursor.close();
-    }
 
-    public Tasks getLoadedTask(String date) {
-        loadSingleTask(date);
+    public Tasks getLoadedTask() {
         return mLoadedTask;
     }
 
@@ -85,6 +75,18 @@ public class TaskManager {
 
     public void updateTasks(String name, String descr, String time, String date, String place, String priority) {
         mHelper.updateTask(name, descr, time, date, place, priority);
+    }
+
+
+    public void getSpecificTask(String date, String time) {
+        TaskCursor cursor = mHelper.queryTask(date, time);
+        cursor.moveToFirst();
+        if (!cursor.isAfterLast()) {
+            mLoadedTask = cursor.getSpecificTask();
+        } else {
+            mLoadedTask = new Tasks();
+        }
+        cursor.close();
     }
 
     public boolean checkIfTasksExsists(String date, String time) {

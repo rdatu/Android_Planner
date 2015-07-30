@@ -50,7 +50,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
 
     private TaskManager mTaskManager;
     private Calendar mCalendar;
-    private TextView mTextTask, mTimeSlot;
+    private TextView mTextTask, mTimeSlot, mPriority, mDescription;
     private Callbacks mCallbacks;
     private Context mAppContext;
     private ArrayList<Tasks> mListTasks;
@@ -205,8 +205,24 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
+        String name, place, descr, priority;
+        Tasks tasks;
         String time = ((TextView) v.findViewById(R.id.time_slot)).getText().toString();
-        mCallbacks.onTimeSlotSelected(time, getActivity().getTitle().toString());
+        mTaskManager.getSpecificTask(getActivity().getTitle().toString(), time);
+        tasks = mTaskManager.getLoadedTask();
+        if (tasks != null) {
+            name = tasks.getTaskName();
+            place = tasks.getPlace();
+            descr = tasks.getDescription();
+            priority = tasks.getPriority();
+        } else {
+            name = "";
+            place = "";
+            descr = "";
+            priority = "LOW";
+        }
+
+        mCallbacks.onTimeSlotSelected(time, getActivity().getTitle().toString(), name, place, descr, priority);
     }
 
     public void onResume() {
@@ -227,7 +243,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
     public interface Callbacks {
         void onListUpdate(String date);
 
-        void onTimeSlotSelected(String time, String date);
+        void onTimeSlotSelected(String time, String date, String name, String place, String descr, String priority);
     }
 
 
@@ -252,7 +268,6 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
             mTextTask = (TextView) convertView.findViewById(R.id.task_name);
             mTextTask.setText(getString(R.string.default_task_text));
 
-
             try {
                 mTextTask.setText(getString(R.string.default_task_text));
                 for (Tasks t : mListTasks) {
@@ -269,6 +284,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
                 Log.e("Planner", "Error", e);
 
             }
+
 
             return convertView;
         }

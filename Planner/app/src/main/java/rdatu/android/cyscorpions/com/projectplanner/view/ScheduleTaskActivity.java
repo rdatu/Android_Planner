@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -32,9 +33,10 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
     private final int COLOR_HIGH = Color.RED;
     private final int COLOR_LOW = Color.GREEN;
 
-    private String mTimeStart, mTimeEnd, mDateSelected;
+    private String mTimeStart, mTimeEnd, mDateSelected, mPlace, mName, mDescription, mPriority;
     private EditText mFromTimeText, mToTimeText, mTaskNameText, mTaskDescriptionText, mPlaceText;
     private Button mDateButton, mDoneButton, mPriorityButton;
+    private LinearLayout mLayout;
     private TaskManager mTaskManager;
     private ArrayList<Tasks> mListTasks;
 
@@ -45,10 +47,17 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scheduled_activity);
 
+        mLayout = (LinearLayout) findViewById(R.id.list_item_back);
         mTaskManager = TaskManager.get(getApplicationContext(), true);
 
         mDateSelected = getIntent().getStringExtra(ListPlannerActivity.EXTRA_DATE_SELECTED);
         String timeSelected = getIntent().getStringExtra(ListPlannerActivity.EXTRA_TIME_SELECTED);
+        mName = getIntent().getStringExtra(ListPlannerActivity.EXTRA_TASKNAME);
+        mDescription = getIntent().getStringExtra(ListPlannerActivity.EXTRA_DESC);
+        mPlace = getIntent().getStringExtra(ListPlannerActivity.EXTRA_PLACE);
+        mPriority = getIntent().getStringExtra(ListPlannerActivity.EXTRA_PRIORITY);
+
+
         if (!timeSelected.equals(null)) {
             mTimeStart = timeSelected.substring(0, 5);
             mTimeEnd = timeSelected.substring(8, timeSelected.length());
@@ -80,11 +89,16 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
         });
 
         mTaskNameText = (EditText) findViewById(R.id.inputTaskName);
+        mTaskNameText.setText(mName);
+
         mTaskDescriptionText = (EditText) findViewById(R.id.inputDescription);
+        mTaskDescriptionText.setText(mDescription);
+
         mPlaceText = (EditText) findViewById(R.id.inputPlace);
+        mPlaceText.setText(mPlace);
 
         mPriorityButton = (Button) findViewById(R.id.priority_button);
-        mPriorityButton.setText(PRIORITY_HIGH);
+        mPriorityButton.setText(mPriority);
         mPriorityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,6 +107,8 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
                     mPriorityButton.setText(PRIORITY_LOW);
                 } else if (p.equals(PRIORITY_LOW)) {
                     mPriorityButton.setText(PRIORITY_HIGH);
+                } else {
+                    mPriorityButton.setText(PRIORITY_LOW);
                 }
             }
         });
@@ -159,7 +175,6 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
 
             }
         });
-
 
     }
 
