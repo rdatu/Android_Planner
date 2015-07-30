@@ -106,7 +106,6 @@ public class ListPlannerActivity extends FragmentActivity implements ListPlanner
 
         mViewPager.setAdapter(mAdapter);
         mViewPager.setCurrentItem(1, false);
-
     }
 
     @Override
@@ -118,8 +117,6 @@ public class ListPlannerActivity extends FragmentActivity implements ListPlanner
             default:
                 return super.onOptionsItemSelected(item);
         }
-
-
     }
 
     private void showDatePicker() {
@@ -160,8 +157,5 @@ public class ListPlannerActivity extends FragmentActivity implements ListPlanner
         i.putExtra(EXTRA_NEWDATE, date);
         finish();
         startActivity(i);
-
     }
-
-
 }

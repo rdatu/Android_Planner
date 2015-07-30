@@ -7,12 +7,14 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -117,15 +119,38 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
             default:
                 return super.onOptionsItemSelected(item);
         }
-
-
     }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        getActivity().getMenuInflater().inflate(R.menu.context_menu, menu);
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        menu.setHeaderTitle(TIME_SLOT[info.position]);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int position = info.position;
+        Toast.makeText(getActivity().getApplicationContext(), "Deleted " + position, Toast.LENGTH_SHORT).show();
+        return true;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = super.onCreateView(inflater, container, savedInstanceState);
-        ListView lv = (ListView) v.findViewById(R.id.listView);
+        ListView lv = (ListView) v.findViewById(android.R.id.list);
+
+
         return v;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        ListView lv = getListView();
+        registerForContextMenu(lv);
+        super.onActivityCreated(savedInstanceState);
     }
 
     protected final void onNextDay() {
@@ -144,6 +169,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
 
         getListView().invalidateViews();
     }
+
 
     protected final void onPreviousDay() {
 
@@ -203,7 +229,6 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
 
 
     private class ListFragmentAdapter extends ArrayAdapter<String> {
-
 
         public ListFragmentAdapter(String[] time_slot) {
             super(getActivity(), android.R.layout.simple_list_item_1, time_slot);

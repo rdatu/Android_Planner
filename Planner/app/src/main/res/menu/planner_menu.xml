@@ -11,6 +11,7 @@
         android:id="@+id/menu_item_jump"
         android:icon="@drawable/jump"
         android:title="@string/menu_jumpto"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         />
+    
 </menu>
