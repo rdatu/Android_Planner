@@ -5,8 +5,12 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.MenuItem;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import rdatu.android.cyscorpions.com.projectplanner.R;
@@ -15,26 +19,48 @@ import rdatu.android.cyscorpions.com.projectplanner.controller.PlannerPagerAdapt
 /**
  * Created by rayeldatu on 7/27/15.
  */
-public class ListPlannerActivity extends FragmentActivity implements ListPlannerFragment.Callbacks {
+public class ListPlannerActivity extends FragmentActivity implements ListPlannerFragment.Callbacks, DatePickerDialog.Callbacks {
 
+    public static final String FUNCTION_FORCHANGE = "jumpto";
     public static final String EXTRA_TIME_SELECTED = "timeselected";
     public static final String EXTRA_DATE_SELECTED = "dateselected";
+    public static final String EXTRA_NEWDATE = "newdate";
     private static final int PAGE_MIDDLE = 1;
+    final ListPlannerFragment[] LIST_PLANNER = new ListPlannerFragment[3];
     private ViewPager mViewPager;
     private Calendar mCurrentCalendar;
     private int mSelectedPageIndex;
+    private PlannerPagerAdapter mAdapter;
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
 
     @Override
     @SuppressWarnings("deprecation")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("Planner", "OnCreate");
 
-        final ListPlannerFragment[] LIST_PLANNER = new ListPlannerFragment[3];
         Calendar prevDay, nextDay;
 
         mViewPager = new ViewPager(this);
         mViewPager.setId(R.id.ViewPager);
-        mCurrentCalendar = Calendar.getInstance();
+
+        if (getIntent().hasExtra(EXTRA_NEWDATE)) {
+            SimpleDateFormat df = new SimpleDateFormat("MMM-dd-yyyy");
+            try {
+                mCurrentCalendar = Calendar.getInstance();
+                mCurrentCalendar.setTime(df.parse(getIntent().getStringExtra(EXTRA_NEWDATE)));
+            } catch (Exception e) {
+
+            }
+        } else {
+            mCurrentCalendar = Calendar.getInstance();
+        }
 
         setContentView(mViewPager);
 
@@ -48,7 +74,7 @@ public class ListPlannerActivity extends FragmentActivity implements ListPlanner
         LIST_PLANNER[1] = ListPlannerFragment.newInstance(mCurrentCalendar, getApplicationContext());
         LIST_PLANNER[2] = ListPlannerFragment.newInstance(nextDay, getApplicationContext());
 
-        PlannerPagerAdapter adapter = new PlannerPagerAdapter(getSupportFragmentManager(), LIST_PLANNER);
+        mAdapter = new PlannerPagerAdapter(getSupportFragmentManager(), LIST_PLANNER);
 
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -77,12 +103,29 @@ public class ListPlannerActivity extends FragmentActivity implements ListPlanner
                 }
             }
         });
-        mViewPager.setAdapter(adapter);
-        //SET Current Selected item to index 1,
-        //index 1 is the middle one which should be the item that is always selected
+
+        mViewPager.setAdapter(mAdapter);
         mViewPager.setCurrentItem(1, false);
 
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_jump:
+                showDatePicker();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+
+    }
+
+    private void showDatePicker() {
+        FragmentManager fm = getSupportFragmentManager();
+        DatePickerDialog dialog = DatePickerDialog.newInstance(getTitle().toString(), FUNCTION_FORCHANGE);
+        dialog.show(fm, "datePicker");
     }
 
     @TargetApi(11)
@@ -103,4 +146,22 @@ public class ListPlannerActivity extends FragmentActivity implements ListPlanner
         i.putExtra(EXTRA_DATE_SELECTED, date);
         startActivity(i);
     }
+
+    @Override
+    public void onDateChanged(String date) {
+        //Not Used here
+    }
+
+    @TargetApi(11)
+    @Override
+    public void onJumpTo(String date) {
+
+        Intent i = getIntent();
+        i.putExtra(EXTRA_NEWDATE, date);
+        finish();
+        startActivity(i);
+
+    }
+
+
 }

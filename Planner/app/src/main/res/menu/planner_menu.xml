@@ -7,4 +7,10 @@
         android:icon="@drawable/refresh"
         android:title="@string/menu_refresh"
         app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/menu_item_jump"
+        android:icon="@drawable/jump"
+        android:title="@string/menu_jumpto"
+        app:showAsAction="ifRoom"
+        />
 </menu>

@@ -4,6 +4,7 @@ package rdatu.android.cyscorpions.com.projectplanner.view;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,8 +29,9 @@ import rdatu.android.cyscorpions.com.projectplanner.model.Tasks;
 /**
  * Created by rayeldatu on 7/27/15.
  */
-public class ListPlannerFragment extends ListFragment {
+public class ListPlannerFragment extends ListFragment implements DatePickerDialog.Callbacks {
 
+    public static final String FUNCTION_FORCHANGE = "jumpto";
     private static final String TAG = "Planner";
     private final String[] TIME_SLOT = {
             "24:00 - 01:00", "01:00 - 02:00",
@@ -53,6 +55,10 @@ public class ListPlannerFragment extends ListFragment {
     private Context mAppContext;
     private ArrayList<Tasks> mListTasks;
 
+
+    public ListPlannerFragment() {
+
+    }
 
     public ListPlannerFragment(Calendar a, Context c) {
         mCalendar = a;
@@ -106,9 +112,8 @@ public class ListPlannerFragment extends ListFragment {
                 tasks = mTaskManager.getTasks();
                 Toast.makeText(getActivity().getApplicationContext(), "Number of Tasks: " + tasks.size(), Toast.LENGTH_SHORT).show();
                 getListView().invalidateViews();
-
-
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -131,7 +136,12 @@ public class ListPlannerFragment extends ListFragment {
         } else {
             mCalendar.add(Calendar.DAY_OF_MONTH, 1);
         }
-        mCallbacks.onListUpdate(getStringDate());
+        try {
+            mCallbacks.onListUpdate(getStringDate());
+        } catch (Exception e) {
+            Log.e("Planner", "Error", e);
+        }
+
         getListView().invalidateViews();
     }
 
@@ -143,8 +153,12 @@ public class ListPlannerFragment extends ListFragment {
         } else {
             mCalendar.add(Calendar.DAY_OF_MONTH, -1);
         }
-        Log.d(TAG, (mCallbacks == null) + "////" + (mCalendar == null));
-        mCallbacks.onListUpdate(getStringDate());
+
+        try {
+            mCallbacks.onListUpdate(getStringDate());
+        } catch (Exception e) {
+            Log.e("Planner", "Error", e);
+        }
         getListView().invalidateViews();
 
     }
@@ -163,6 +177,22 @@ public class ListPlannerFragment extends ListFragment {
     public void onResume() {
         super.onResume();
         getListView().invalidateViews();
+    }
+
+    @Override
+    public void onDateChanged(String date) {
+        //Not Used
+    }
+
+    @Override
+    public void onJumpTo(String date) {
+
+    }
+
+    private void showDatePicker() {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        DatePickerDialog dialog = DatePickerDialog.newInstance(getActivity().getTitle().toString(), FUNCTION_FORCHANGE);
+        dialog.show(fm, "datePicker");
     }
 
     public interface Callbacks {

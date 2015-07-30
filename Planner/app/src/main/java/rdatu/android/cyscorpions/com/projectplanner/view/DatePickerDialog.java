@@ -17,25 +17,28 @@ import java.util.Date;
 public class DatePickerDialog extends DialogFragment implements android.app.DatePickerDialog.OnDateSetListener {
 
     public static final String EXTRA_DATE = "date";
+    public static final String EXTRA_FUNCTION = "function";
     private Callbacks mCallbacks;
-    private String mStringDate;
+    private String mStringDate, mDatePickerFunction;
 
     public DatePickerDialog() {
 
     }
 
-    public static DatePickerDialog newInstance(String date) {
+    public static DatePickerDialog newInstance(String date, String function) {
         DatePickerDialog fragment = new DatePickerDialog();
         Bundle args = new Bundle();
-
+        args.putSerializable(EXTRA_FUNCTION, function);
         args.putSerializable(EXTRA_DATE, date);
         fragment.setArguments(args);
         return fragment;
     }
 
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mStringDate = getArguments().getString(EXTRA_DATE);
+        mDatePickerFunction = getArguments().getString(EXTRA_FUNCTION);
     }
 
     @Override
@@ -48,11 +51,18 @@ public class DatePickerDialog extends DialogFragment implements android.app.Date
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         SimpleDateFormat df = new SimpleDateFormat("MMM-dd-yyyy");
         Calendar c = Calendar.getInstance();
-
         c.set(Calendar.YEAR, year);
         c.set(Calendar.MONTH, monthOfYear);
         c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        mCallbacks.onDateChanged(df.format(c.getTime()));
+        switch (mDatePickerFunction) {
+            case ScheduleTaskActivity.FUNCTION_FORCHANGE:
+                mCallbacks.onDateChanged(df.format(c.getTime()));
+                break;
+            case ListPlannerFragment.FUNCTION_FORCHANGE:
+                mCallbacks.onJumpTo(df.format(c.getTime()));
+                break;
+        }
+
     }
 
     @Override
@@ -76,6 +86,8 @@ public class DatePickerDialog extends DialogFragment implements android.app.Date
 
     public interface Callbacks {
         void onDateChanged(String date);
+
+        void onJumpTo(String date);
     }
 
 }

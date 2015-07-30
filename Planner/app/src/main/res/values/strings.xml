@@ -15,5 +15,5 @@
     <string name="place">Place</string>
     <string name="priority_text">Priority</string>
     <string name="menu_refresh">Refresh</string>
-
+    <string name="menu_jumpto">Jump too...</string>
 </resources>
