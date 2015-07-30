@@ -70,6 +70,10 @@ public class TaskManager {
         cursor.close();
     }
 
+    public void deleteTasks(String date, String time) {
+        mHelper.deleteSpecificTask(date, time);
+    }
+
     public void saveTask(Tasks task) {
         mTasks.add(task);
         mHelper.insertTasks(task.getTaskName(), task.getDescription(), task.getPlace(), task.getDate(), task.getTimeSlot(), task.getPriority());

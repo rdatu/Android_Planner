@@ -51,6 +51,10 @@ public class TasksDatabaseHelper extends SQLiteOpenHelper {
         getWritableDatabase().delete(TABLE_TASKS, null, null);
     }
 
+    public void deleteSpecificTask(String date, String time) {
+        getWritableDatabase().delete(TABLE_TASKS, "task_date = ? AND task_time = ?", new String[]{date, time});
+    }
+
     public void updateTask(String name, String descr, String time, String date, String place, String priority) {
 
         Cursor cursor = getWritableDatabase().rawQuery("UPDATE tasks SET task_name = ?, task_date=?,task_time=?,task_description=?,task_place=?,task_priority=? WHERE task_date=? AND task_time =?", new String[]{name, date, time, descr, place, priority, date, time});
