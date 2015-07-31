@@ -126,8 +126,9 @@
                     android:layout_width="@dimen/zero_dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:editable="false"
+                    android:focusableInTouchMode="false"
                     android:gravity="center"
+                    android:inputType="none"
                     />
 
 
