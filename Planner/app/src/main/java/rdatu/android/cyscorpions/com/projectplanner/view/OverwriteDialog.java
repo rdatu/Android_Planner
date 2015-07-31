@@ -60,19 +60,17 @@ public class OverwriteDialog extends DialogFragment implements AlertDialog.OnCli
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         return new AlertDialog.Builder(getActivity())
-                .setTitle("Too bad ;(").setMessage("Conflicts found, Cannot continue").setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setTitle("Too bad ;(").setMessage("Conflicts found, Cannot continue\nGo BACK to see your schedule").setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //Low Priority : update tasks
-                        // TODO
-                        // mCallbacks.onOverwrite(mName, mDescription, mTime, mDate, mPlace, mPriority);
+                        getActivity().finish();
                     }
                 }).create();
-
     }
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
+
 
     }
 

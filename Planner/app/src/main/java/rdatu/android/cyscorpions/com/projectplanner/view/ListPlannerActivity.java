@@ -59,11 +59,13 @@ public class ListPlannerActivity extends FragmentActivity implements ListPlanner
             try {
                 mCurrentCalendar = Calendar.getInstance();
                 mCurrentCalendar.setTime(df.parse(getIntent().getStringExtra(EXTRA_NEWDATE)));
+                mCurrentCalendar.add(Calendar.DAY_OF_MONTH, -1);
             } catch (Exception e) {
 
             }
         } else {
             mCurrentCalendar = Calendar.getInstance();
+            mCurrentCalendar.add(Calendar.DAY_OF_MONTH, -1);
         }
 
         setContentView(mViewPager);
@@ -149,6 +151,7 @@ public class ListPlannerActivity extends FragmentActivity implements ListPlanner
         i.putExtra(EXTRA_PLACE, place);
         i.putExtra(EXTRA_DESC, descr);
         i.putExtra(EXTRA_PRIORITY, priority);
+        i.putExtra(ScheduleTaskActivity.ACTIVITY_FUNCTION, "edit");
         startActivity(i);
     }
 

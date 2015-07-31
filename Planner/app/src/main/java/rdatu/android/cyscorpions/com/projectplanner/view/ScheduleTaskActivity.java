@@ -28,6 +28,7 @@ import rdatu.android.cyscorpions.com.projectplanner.model.Tasks;
 public class ScheduleTaskActivity extends FragmentActivity implements DatePickerDialog.Callbacks, TimePickerDialog.Callbacks, OverwriteDialog.Callbacks {
 
     public static final String FUNCTION_FORCHANGE = "simplepicker";
+    public static final String ACTIVITY_FUNCTION = "FUNCTION";
     private final String PRIORITY_HIGH = "HIGH";
     private final String PRIORITY_LOW = "LOW";
     private final int COLOR_HIGH = Color.RED;
@@ -113,6 +114,17 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
             }
         });
         mDoneButton = (Button) findViewById(R.id.doneButton);
+
+        if (getIntent().getStringExtra(ACTIVITY_FUNCTION).equals("edit")) {
+            mDoneButton.setText("Save Changes");
+            mToTimeText.setEnabled(false);
+            mDateButton.setEnabled(false);
+        } else {
+            mDateButton.setEnabled(true);
+            mToTimeText.setClickable(true);
+            mDoneButton.setText("Done");
+        }
+
         mDoneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,6 +150,16 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
                         return;
                     }
 
+                    if (getIntent().getStringExtra(ACTIVITY_FUNCTION).equals("edit")) {
+
+                        time = mFromTimeText.getText().toString() + " - " + mToTimeText.getText().toString();
+
+                        mTaskManager.updateTasks(name, descr, time, date, place, priority);
+                        finish();
+                        return;
+                    }
+
+
                     for (int i = timeStart; i < timeEnd; i++) {
                         try {
 
@@ -147,9 +169,9 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
                             time = df.format(dStart) + " - " + df.format(dEnd);
 
                             if (mTaskManager.checkIfTasksExsists(date, time)) {
-                                //TODO Overwrite
+                                // TODO Overwrite
                                 showOverwriteDialog(name, descr, time, date, place, priority);
-                                finish();
+                                break;
                             } else {
                                 task.setDate(date);
                                 task.setTaskName(name);
@@ -175,6 +197,7 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
 
             }
         });
+
 
     }
 
@@ -225,6 +248,8 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
         if (TextUtils.isEmpty(mToTimeText.getText().toString()))
             ready = false;
         if (TextUtils.isEmpty(mDateButton.getText().toString()))
+            ready = false;
+        if (TextUtils.isEmpty(mPriorityButton.getText().toString()))
             ready = false;
 
         return ready;

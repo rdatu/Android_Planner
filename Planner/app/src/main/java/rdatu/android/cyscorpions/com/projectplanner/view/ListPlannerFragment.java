@@ -35,7 +35,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
     public static final String FUNCTION_FORCHANGE = "jumpto";
     private static final String TAG = "Planner";
     private final String[] TIME_SLOT = {
-            "24:00 - 01:00", "01:00 - 02:00",
+            "00:00 - 01:00", "01:00 - 02:00",
             "02:00 - 03:00", "03:00 - 04:00",
             "04:00 - 05:00", "05:00 - 06:00",
             "06:00 - 07:00", "07:00 - 08:00",
@@ -124,8 +124,14 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        getActivity().getMenuInflater().inflate(R.menu.context_menu, menu);
+
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        Tasks t = mTaskManager.getLoadedTask();
+        if (t == null)
+            return;
+        getActivity().getMenuInflater().inflate(R.menu.context_menu, menu);
+        mTaskManager.getSpecificTask(getActivity().getTitle().toString(), TIME_SLOT[info.position]);
+
         menu.setHeaderTitle(TIME_SLOT[info.position]);
     }
 
@@ -136,13 +142,8 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
 
         switch (item.getItemId()) {
             case R.id.menu_item_delete:
-
-
+                Log.d("Planner", TIME_SLOT[position]);
                 mTaskManager.deleteEntry(getActivity().getTitle().toString(), TIME_SLOT[position]);
-                ArrayList<Tasks> tasks;
-                tasks = mTaskManager.getTasks();
-                mListTasks.clear();
-                mListTasks = tasks;
                 getListView().invalidateViews();
         }
         return true;
@@ -225,6 +226,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
         }
 
         mCallbacks.onTimeSlotSelected(time, getActivity().getTitle().toString(), name, place, descr, priority);
+
     }
 
     public void onResume() {
@@ -273,25 +275,38 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
             mDescription.setText("No Description");
             mLayout = (LinearLayout) convertView.findViewById(R.id.list_item_back);
 
+            mListTasks = mTaskManager.getTasksForDate(getActivity().getTitle().toString());
 
+            Log.d("Planner", getActivity().getTitle().toString());
             try {
                 mTextTask.setText(getString(R.string.default_task_text));
+                if (mListTasks == null) {
+                    return convertView;
+                }
                 for (Tasks t : mListTasks) {
                     if (t.getDate().equals(getActivity().getTitle().toString())) {
                         if (t.getTimeSlot().equals(mTimeSlot.getText().toString())) {
                             mTextTask.setText(t.getTaskName());
+
                             mDescription.setText(t.getDescription());
                             /*if (t.getPriority().equals("HIGH")) {
-
                                 mLayout.setBackgroundColor(Color.RED);
+                                mTextTask.setTextColor(Color.BLACK);
+                                mDescription.setTextColor(Color.BLACK);
                             } else {
-                                mLayout.setBackgroundColor(Color.WHITE);
+                                mLayout.setBackgroundColor(Color.GREEN);
+                                mTextTask.setTextColor(Color.BLACK);
+                                mDescription.setTextColor(Color.BLACK);
                             }*/
                             break;
                         } else {
                             mTextTask.setText(getString(R.string.default_task_text));
+                            //mLayout.setBackgroundColor(Color.WHITE);
                         }
+                    } else {
+                        //mLayout.setBackgroundColor(Color.WHITE);
                     }
+
                 }
             } catch (Exception e) {
                 Log.e("Planner", "Error", e);

@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.CursorWrapper;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -53,12 +54,21 @@ public class TasksDatabaseHelper extends SQLiteOpenHelper {
 
     public void deleteWithCondition(String date, String time) {
         String Where = COLUMN_DATE + "='" + date + "' AND " + COLUMN_TIMESLOT + "='" + time + "'";
-        getWritableDatabase().execSQL("DELETE FROM tasks");
+        try {
+            getWritableDatabase().execSQL("DELETE FROM tasks WHERE " + Where);
+        } catch (Exception e) {
+            Log.e("Planner", "Error:", e);
+        }
+
     }
 
     public void updateTask(String name, String descr, String time, String date, String place, String priority) {
+        try {
+            getWritableDatabase().execSQL("UPDATE tasks SET task_name=?, task_date=?,task_time=?,task_description=?,task_place=?,task_priority=? WHERE task_date=? AND task_time =?", new String[]{name, date, time, descr, place, priority, date, time});
+        } catch (Exception e) {
+            Log.e("Planner", "Error: ", e);
+        }
 
-        Cursor cursor = getWritableDatabase().rawQuery("UPDATE tasks SET task_name = ?, task_date=?,task_time=?,task_description=?,task_place=?,task_priority=? WHERE task_date=? AND task_time =?", new String[]{name, date, time, descr, place, priority, date, time});
 
     }
 

@@ -73,6 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Date"
+
                 />
 
             <TextView
@@ -86,6 +87,7 @@
                 android:id="@+id/priority_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="HIGH"
                 />
 
             <TextView
@@ -124,8 +126,8 @@
                     android:layout_width="@dimen/zero_dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
+                    android:editable="false"
                     android:gravity="center"
-                    android:hint="@string/end_time"
                     />
 
 
