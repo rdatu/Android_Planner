@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.CursorWrapper;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -53,7 +54,12 @@ public class TasksDatabaseHelper extends SQLiteOpenHelper {
 
     public void deleteWithCondition(String date, String time) {
         String Where = COLUMN_DATE + "='" + date + "' AND " + COLUMN_TIMESLOT + "='" + time + "'";
-        getWritableDatabase().execSQL("DELETE FROM tasks");
+        try {
+            getWritableDatabase().execSQL("DELETE FROM tasks WHERE " + Where);
+        } catch (Exception e) {
+            Log.e("Planner", "Error:", e);
+        }
+
     }
 
     public void updateTask(String name, String descr, String time, String date, String place, String priority) {

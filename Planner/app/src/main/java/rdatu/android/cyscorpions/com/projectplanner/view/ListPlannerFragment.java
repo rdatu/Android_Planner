@@ -3,6 +3,7 @@ package rdatu.android.cyscorpions.com.projectplanner.view;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -134,13 +136,13 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
 
         switch (item.getItemId()) {
             case R.id.menu_item_delete:
-
-
+                Log.d("Planner", TIME_SLOT[position]);
                 mTaskManager.deleteEntry(getActivity().getTitle().toString(), TIME_SLOT[position]);
                 ArrayList<Tasks> tasks;
                 tasks = mTaskManager.getTasks();
                 mListTasks.clear();
                 mListTasks = tasks;
+                Toast.makeText(getActivity().getApplicationContext(), "No. of current Rows: " + tasks.size(), Toast.LENGTH_SHORT).show();
                 getListView().invalidateViews();
         }
         return true;
@@ -206,7 +208,25 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         String time = ((TextView) v.findViewById(R.id.time_slot)).getText().toString();
+<<<<<<< Updated upstream
         mCallbacks.onTimeSlotSelected(time, getActivity().getTitle().toString());
+=======
+        mTaskManager.getSpecificTask(getActivity().getTitle().toString(), time);
+        tasks = mTaskManager.getLoadedTask();
+        if (tasks != null) {
+            name = tasks.getTaskName();
+            place = tasks.getPlace();
+            descr = tasks.getDescription();
+            priority = tasks.getPriority();
+        } else {
+            name = "";
+            place = "";
+            descr = "";
+            priority = "HIGH";
+        }
+
+        mCallbacks.onTimeSlotSelected(time, getActivity().getTitle().toString(), name, place, descr, priority);
+>>>>>>> Stashed changes
     }
 
     public void onResume() {
@@ -252,16 +272,36 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
             mTextTask = (TextView) convertView.findViewById(R.id.task_name);
             mTextTask.setText(getString(R.string.default_task_text));
 
+            mListTasks = mTaskManager.getTasksForDate(getActivity().getTitle().toString());
 
+            Log.d("Planner", getActivity().getTitle().toString());
             try {
                 mTextTask.setText(getString(R.string.default_task_text));
+                if (mListTasks == null) {
+                    return convertView;
+                }
                 for (Tasks t : mListTasks) {
                     if (t.getDate().equals(getActivity().getTitle().toString())) {
                         if (t.getTimeSlot().equals(mTimeSlot.getText().toString())) {
                             mTextTask.setText(t.getTaskName());
+<<<<<<< Updated upstream
+=======
+                            mDescription.setText(t.getDescription());
+                            if (t.getPriority().equals("HIGH")) {
+
+                                mLayout.setBackgroundColor(Color.RED);
+                                mTextTask.setTextColor(Color.BLACK);
+                                mDescription.setTextColor(Color.BLACK);
+                            } else {
+                                mLayout.setBackgroundColor(Color.GREEN);
+                                mTextTask.setTextColor(Color.BLACK);
+                                mDescription.setTextColor(Color.BLACK);
+                            }
+>>>>>>> Stashed changes
                             break;
                         } else {
                             mTextTask.setText(getString(R.string.default_task_text));
+                            mLayout.setBackgroundColor(Color.WHITE);
                         }
                     }
                 }

@@ -133,7 +133,7 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
                             if (mTaskManager.checkIfTasksExsists(date, time)) {
                                 //TODO Overwrite
                                 showOverwriteDialog(name, descr, time, date, place, priority);
-                                finish();
+                                break;
                             } else {
                                 task.setDate(date);
                                 task.setTaskName(name);
@@ -142,7 +142,7 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
                                 task.setPriority(priority);
                                 task.setTimeSlot(time);
                                 mTaskManager.saveTask(task);
-                                finish();
+
                             }
 
 
@@ -210,6 +210,8 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
         if (TextUtils.isEmpty(mToTimeText.getText().toString()))
             ready = false;
         if (TextUtils.isEmpty(mDateButton.getText().toString()))
+            ready = false;
+        if (TextUtils.isEmpty(mPriorityButton.getText().toString()))
             ready = false;
 
         return ready;
