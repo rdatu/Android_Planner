@@ -14,9 +14,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import rdatu.android.cyscorpions.com.projectplanner.R;
 import rdatu.android.cyscorpions.com.projectplanner.controller.TaskManager;
@@ -41,6 +39,12 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
     private TaskManager mTaskManager;
     private ArrayList<Tasks> mListTasks;
 
+    public static String getFormattedTime(int hour) {
+        String s, e;
+        s = String.format("%02d", hour);
+        e = String.format("%02d", hour + 1);
+        return (s + ":00") + " - " + (e + ":00");
+    }
 
     @Override
     @TargetApi(11)
@@ -132,10 +136,8 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
                     String name, descr, date, place, priority, time;
                     int interval;
                     int timeStart, timeEnd;
+                    boolean hasDuplicate = false;
 
-                    SimpleDateFormat df = new SimpleDateFormat("kk:mm");
-                    Date dStart, dEnd;
-                    dStart = dEnd = null;
                     name = mTaskNameText.getText().toString();
                     descr = mTaskDescriptionText.getText().toString();
                     date = mDateButton.getText().toString();
@@ -145,51 +147,33 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
                     place = mPlaceText.getText().toString();
                     priority = mPriorityButton.getText().toString();
 
+
                     if (interval < 0) {
                         Toast.makeText(getApplicationContext(), "Please choose a time within the 24-hour", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
                     if (getIntent().getStringExtra(ACTIVITY_FUNCTION).equals("edit")) {
-
-                        time = mFromTimeText.getText().toString() + " - " + mToTimeText.getText().toString();
-
-                        mTaskManager.updateTasks(name, descr, time, date, place, priority);
+                        mTaskManager.updateTasks(name, descr, getFormattedTime(timeStart), date, place, priority);
                         finish();
                         return;
                     }
 
-
                     for (int i = timeStart; i < timeEnd; i++) {
                         try {
-
-                            Tasks task = new Tasks();
-                            dStart = df.parse(i + ":00");
-                            dEnd = df.parse((i + 1) + ":00");
-                            //time = df.format(dStart) + " - " + df.format(dEnd);
-                            String s, e;
-                            s = String.format("%02d", i);
-                            e = String.format("%02d", i + 1);
-                            time = (s + ":00") + " - " + (e + ":00");
-
-                            if (mTaskManager.checkIfTasksExsists(date, time)) {
-                                // TODO Overwrite
-                                showOverwriteDialog(name, descr, time, date, place, priority);
+                            hasDuplicate = mTaskManager.checkIfTasksExsists(date, getFormattedTime(i));
+                            if (hasDuplicate)
                                 break;
-                            } else {
-                                task.setDate(date);
-                                task.setTaskName(name);
-                                task.setDescription(descr);
-                                task.setPlace(place);
-                                task.setPriority(priority);
-                                task.setTimeSlot(time);
-                                mTaskManager.saveTask(task);
-                                finish();
-                            }
-
-
                         } catch (Exception e) {
                             Log.e("Planner", "Something went wrong!", e);
+                        }
+                    }
+
+                    if (hasDuplicate) {
+                        showOverwriteDialog(name, descr, place, priority, date, timeStart, timeEnd);
+                    } else {
+                        for (int i = timeStart; i < timeEnd; i++) {
+                            saveTasks(date, name, descr, place, priority, getFormattedTime(i));
                         }
                     }
 
@@ -201,8 +185,19 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
 
             }
         });
+    }
 
 
+    private void saveTasks(String date, String name, String descr, String place, String priority, String time) {
+        Tasks task = new Tasks();
+        task.setDate(date);
+        task.setTaskName(name);
+        task.setDescription(descr);
+        task.setPlace(place);
+        task.setPriority(priority);
+        task.setTimeSlot(time);
+        mTaskManager.saveTask(task);
+        finish();
     }
 
     private void showDatePicker() {
@@ -217,9 +212,9 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
         dialog.show(fm, "timePicker");
     }
 
-    private void showOverwriteDialog(String name, String descr, String time, String date, String place, String priority) {
+    private void showOverwriteDialog(String name, String descr, String place, String priority, String date, int start, int end) {
         FragmentManager fm = getSupportFragmentManager();
-        OverwriteDialog dialog = OverwriteDialog.newInstance(name, descr, time, date, place, priority);
+        OverwriteDialog dialog = OverwriteDialog.newInstance(name, descr, place, priority, date, start, end);
         dialog.show(fm, "overWrite");
     }
 
@@ -269,8 +264,18 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
 
 
     @Override
-    public void onOverwrite(String name, String descr, String time, String date, String place, String priority) {
-        mTaskManager.updateTasks(name, descr, time, date, place, priority);
+    public void onOverwrite(String name, String descr, String place, String priority, int start, int end, String date) {
+        for (int i = start; i < end; i++) {
+            try {
+                if (mTaskManager.checkIfTasksExsists(date, getFormattedTime(i))) {
+                    mTaskManager.updateTasks(name, descr, getFormattedTime(i), date, place, priority);
+                } else {
+                    saveTasks(date, name, descr, place, priority, getFormattedTime(i));
+                }
+            } catch (Exception e) {
+                Log.e("Planner", "Something went wrong!", e);
+            }
+        }
         Log.d("Planner", "Update Done");
     }
 }

@@ -84,7 +84,6 @@ public class TaskManager {
         mHelper.updateTask(name, descr, time, date, place, priority);
     }
 
-
     public void getSpecificTask(String date, String time) {
         TaskCursor cursor = mHelper.queryTask(date, time);
         cursor.moveToFirst();
@@ -110,10 +109,7 @@ public class TaskManager {
 
     }
 
-
     public ArrayList<Tasks> getTasks() {
         return mTasks;
     }
-
-
 }
