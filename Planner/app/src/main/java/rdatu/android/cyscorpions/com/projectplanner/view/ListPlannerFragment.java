@@ -152,9 +152,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = super.onCreateView(inflater, container, savedInstanceState);
-        ListView lv = (ListView) v.findViewById(android.R.id.list);
-
-
+        //ListView lv = getListView();
         return v;
     }
 
@@ -162,6 +160,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
     public void onActivityCreated(Bundle savedInstanceState) {
         ListView lv = getListView();
         registerForContextMenu(lv);
+
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -179,7 +178,12 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
             Log.e("Planner", "Error", e);
         }
 
-        getListView().invalidateViews();
+
+        try {
+            getListView().invalidateViews();
+        } catch (Exception e) {
+
+        }
     }
 
 
@@ -197,7 +201,12 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
         } catch (Exception e) {
             Log.e("Planner", "Error", e);
         }
-        getListView().invalidateViews();
+        try {
+            getListView().invalidateViews();
+        } catch (Exception e) {
+
+        }
+
 
     }
 
