@@ -3,6 +3,7 @@ package rdatu.android.cyscorpions.com.projectplanner.view;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -285,7 +286,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
             mDescription = (TextView) convertView.findViewById(R.id.task_description);
             mDescription.setText("No Description");
             mLayout = (LinearLayout) convertView.findViewById(R.id.list_item_back);
-
+            mLayout.setBackgroundColor(Color.WHITE);
             mListTasks = mTaskManager.getTasksForDate(getActivity().getTitle().toString());
 
             Log.d("Planner", getActivity().getTitle().toString());
@@ -300,7 +301,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
                             mTextTask.setText(t.getTaskName());
 
                             mDescription.setText(t.getDescription());
-                            /*if (t.getPriority().equals("HIGH")) {
+                            if (t.getPriority().equals("HIGH")) {
                                 mLayout.setBackgroundColor(Color.RED);
                                 mTextTask.setTextColor(Color.BLACK);
                                 mDescription.setTextColor(Color.BLACK);
@@ -308,7 +309,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
                                 mLayout.setBackgroundColor(Color.GREEN);
                                 mTextTask.setTextColor(Color.BLACK);
                                 mDescription.setTextColor(Color.BLACK);
-                            }*/
+                            }
                             break;
                         } else {
                             mTextTask.setText(getString(R.string.default_task_text));

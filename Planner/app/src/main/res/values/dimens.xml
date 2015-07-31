@@ -7,5 +7,7 @@
     <dimen name="zero_dp">0dp</dimen>
     <dimen name="default_margin_top">10dp</dimen>
     <dimen name="horizontal_text_padding">40dp</dimen>
+    <dimen name="fontsize_timeslot">30sp</dimen>
+    <dimen name="fontsize_description">20sp</dimen>
 
 </resources>

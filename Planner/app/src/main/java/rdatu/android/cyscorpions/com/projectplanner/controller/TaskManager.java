@@ -56,7 +56,6 @@ public class TaskManager {
     }
 
     private void loadTasks() {
-        Tasks task = null;
         TaskCursor cursor = mHelper.queryTask();
         cursor.moveToFirst();
         if (!cursor.isAfterLast()) {

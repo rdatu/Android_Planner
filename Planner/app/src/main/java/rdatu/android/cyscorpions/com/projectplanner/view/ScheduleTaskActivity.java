@@ -179,10 +179,7 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
 
                 } else {
                     Toast.makeText(getApplicationContext(), "All fields are required.", Toast.LENGTH_SHORT).show();
-
                 }
-
-
             }
         });
     }
@@ -198,6 +195,7 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
         task.setTimeSlot(time);
         mTaskManager.saveTask(task);
         finish();
+
     }
 
     private void showDatePicker() {
@@ -227,7 +225,6 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
     @Override
     public void onDateChanged(String date) {
         mDateButton.setText(date);
-
     }
 
     @Override
