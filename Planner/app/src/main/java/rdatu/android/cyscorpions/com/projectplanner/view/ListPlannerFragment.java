@@ -89,9 +89,6 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
         setHasOptionsMenu(true);
         mListTasks = new ArrayList<>();
         mListTasks = mTaskManager.getTasks();
-        //Log.d("Planner", "Activity: " + getActivity());
-        /*PopulateList backgroundTask = new PopulateList(getActivity());
-        backgroundTask.execute();*/
         ListFragmentAdapter adapter = new ListFragmentAdapter(TIME_SLOT);
         adapter.setNotifyOnChange(true);
         setListAdapter(adapter);
@@ -156,7 +153,6 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = super.onCreateView(inflater, container, savedInstanceState);
-        //ListView lv = getListView();
         return v;
     }
 
@@ -306,12 +302,12 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
                             mDescription.setText(t.getDescription());
                             if (t.getPriority().equals("HIGH")) {
                                 mLayout.setBackgroundColor(Color.RED);
-                                mTextTask.setTextColor(Color.BLACK);
-                                mDescription.setTextColor(Color.BLACK);
+                                mTextTask.setTextColor(Color.DKGRAY);
+                                mDescription.setTextColor(Color.DKGRAY);
                             } else {
                                 mLayout.setBackgroundColor(Color.GREEN);
-                                mTextTask.setTextColor(Color.BLACK);
-                                mDescription.setTextColor(Color.BLACK);
+                                mTextTask.setTextColor(Color.DKGRAY);
+                                mDescription.setTextColor(Color.DKGRAY);
                             }
                             break;
                         } else {

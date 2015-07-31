@@ -49,7 +49,7 @@
             android:layout_weight="1"
             android:ellipsize="end"
             android:gravity="center"
-            android:textColor="#151515"
+            android:textColor="#D3D3D3"
             />
 
     </LinearLayout>
