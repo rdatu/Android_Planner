@@ -108,15 +108,18 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
-            case R.id.menu_item_refresh:
+
+            //Test Function for Delete All Tasks.
+            /*case R.id.menu_item_refresh:
                 ArrayList<Tasks> tasks;
                 tasks = mTaskManager.getTasks();
                 mTaskManager.deleteAllTasks();
                 tasks.clear();
                 tasks = mTaskManager.getTasks();
                 getListView().invalidateViews();
-                return true;
+                return true;*/
 
             default:
                 return super.onOptionsItemSelected(item);
