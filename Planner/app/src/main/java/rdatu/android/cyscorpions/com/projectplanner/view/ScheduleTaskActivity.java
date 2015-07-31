@@ -166,7 +166,11 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
                             Tasks task = new Tasks();
                             dStart = df.parse(i + ":00");
                             dEnd = df.parse((i + 1) + ":00");
-                            time = df.format(dStart) + " - " + df.format(dEnd);
+                            //time = df.format(dStart) + " - " + df.format(dEnd);
+                            String s, e;
+                            s = String.format("%02d", i);
+                            e = String.format("%02d", i + 1);
+                            time = (s + ":00") + " - " + (e + ":00");
 
                             if (mTaskManager.checkIfTasksExsists(date, time)) {
                                 // TODO Overwrite

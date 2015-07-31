@@ -143,7 +143,7 @@ public class ListPlannerActivity extends FragmentActivity implements ListPlanner
     }
 
     @Override
-    public void onTimeSlotSelected(String time, String date, String name, String place, String descr, String priority) {
+    public void onTimeSlotSelected(String time, String date, String name, String place, String descr, String priority, String task) {
         Intent i = new Intent(getApplicationContext(), ScheduleTaskActivity.class);
         i.putExtra(EXTRA_TIME_SELECTED, time);
         i.putExtra(EXTRA_DATE_SELECTED, date);
@@ -151,7 +151,7 @@ public class ListPlannerActivity extends FragmentActivity implements ListPlanner
         i.putExtra(EXTRA_PLACE, place);
         i.putExtra(EXTRA_DESC, descr);
         i.putExtra(EXTRA_PRIORITY, priority);
-        i.putExtra(ScheduleTaskActivity.ACTIVITY_FUNCTION, "edit");
+        i.putExtra(ScheduleTaskActivity.ACTIVITY_FUNCTION, task);
         startActivity(i);
     }
 

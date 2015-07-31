@@ -208,7 +208,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        String name, place, descr, priority;
+        String name, place, descr, priority, task;
         Tasks tasks;
         String time = ((TextView) v.findViewById(R.id.time_slot)).getText().toString();
         mTaskManager.getSpecificTask(getActivity().getTitle().toString(), time);
@@ -218,14 +218,16 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
             place = tasks.getPlace();
             descr = tasks.getDescription();
             priority = tasks.getPriority();
+            task = "edit";
         } else {
             name = "";
             place = "";
             descr = "";
             priority = "LOW";
+            task = "FUNCTION";
         }
 
-        mCallbacks.onTimeSlotSelected(time, getActivity().getTitle().toString(), name, place, descr, priority);
+        mCallbacks.onTimeSlotSelected(time, getActivity().getTitle().toString(), name, place, descr, priority, task);
 
     }
 
@@ -247,7 +249,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
     public interface Callbacks {
         void onListUpdate(String date);
 
-        void onTimeSlotSelected(String time, String date, String name, String place, String descr, String priority);
+        void onTimeSlotSelected(String time, String date, String name, String place, String descr, String priority, String task);
     }
 
 
