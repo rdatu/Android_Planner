@@ -20,15 +20,15 @@ public class TaskManager {
     private ArrayList<Tasks> mTasks;
     private Tasks mLoadedTask;
 
-    private TaskManager(Context context, boolean all) {
+    private TaskManager(Context context, boolean shouldLoadAllTasks) {
         mAppContext = context;
         mHelper = new TasksDatabaseHelper(mAppContext);
 
         try {
-            if (all) {
+            if (shouldLoadAllTasks) {
                 loadTasks();
             } else {
-                //loadSingleTask();
+
             }
 
         } catch (Exception e) {
@@ -71,9 +71,6 @@ public class TaskManager {
         mHelper.insertTasks(task.getTaskName(), task.getDescription(), task.getPlace(), task.getDate(), task.getTimeSlot(), task.getPriority());
     }
 
-    public void deleteAllTasks() {
-        mHelper.deleteAll();
-    }
 
     public void deleteEntry(String date, String time) {
         mHelper.deleteWithCondition(date, time);
@@ -94,7 +91,7 @@ public class TaskManager {
         cursor.close();
     }
 
-    public boolean checkIfTasksExsists(String date, String time) {
+    public boolean hasTasks(String date, String time) {
         TaskCursor cursor = mHelper.queryTask(date, time);
         Log.d("Planner", cursor.getCount() + " is the size");
         if (cursor.getCount() > 0) {

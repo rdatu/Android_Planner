@@ -157,7 +157,7 @@ public class ListPlannerActivity extends FragmentActivity implements ListPlanner
 
     @Override
     public void onDateChanged(String date) {
-        //Not Used here
+        //Not Used here, Implemented Method cant remove
     }
 
     @TargetApi(11)

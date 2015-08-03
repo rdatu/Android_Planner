@@ -108,16 +108,6 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
 
         switch (item.getItemId()) {
 
-            //Test Function for Delete All Tasks.
-            /*case R.id.menu_item_refresh:
-                ArrayList<Tasks> tasks;
-                tasks = mTaskManager.getTasks();
-                mTaskManager.deleteAllTasks();
-                tasks.clear();
-                tasks = mTaskManager.getTasks();
-                getListView().invalidateViews();
-                return true;*/
-
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -242,12 +232,12 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
 
     @Override
     public void onDateChanged(String date) {
-        //Not Used
+        //Not Used implemented cannot be removed
     }
 
     @Override
     public void onJumpTo(String date) {
-        //Not Used
+        //Not Used implemented cannot be removed
     }
 
     public interface Callbacks {
@@ -309,10 +299,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
                             break;
                         } else {
                             mTextTask.setText(getString(R.string.default_task_text));
-                            //mLayout.setBackgroundColor(Color.WHITE);
                         }
-                    } else {
-                        //mLayout.setBackgroundColor(Color.WHITE);
                     }
                 }
             } catch (Exception e) {

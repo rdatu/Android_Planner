@@ -161,7 +161,7 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
 
                     for (int i = timeStart; i < timeEnd; i++) {
                         try {
-                            hasDuplicate = mTaskManager.checkIfTasksExsists(date, getFormattedTime(i));
+                            hasDuplicate = mTaskManager.hasTasks(date, getFormattedTime(i));
                             if (hasDuplicate)
                                 break;
                         } catch (Exception e) {
@@ -264,7 +264,7 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
     public void onOverwrite(String name, String descr, String place, String priority, int start, int end, String date) {
         for (int i = start; i < end; i++) {
             try {
-                if (mTaskManager.checkIfTasksExsists(date, getFormattedTime(i))) {
+                if (mTaskManager.hasTasks(date, getFormattedTime(i))) {
                     mTaskManager.updateTasks(name, descr, getFormattedTime(i), date, place, priority);
                 } else {
                     saveTasks(date, name, descr, place, priority, getFormattedTime(i));
