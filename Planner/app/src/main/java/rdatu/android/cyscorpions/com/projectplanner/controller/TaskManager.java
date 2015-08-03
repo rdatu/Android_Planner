@@ -98,12 +98,10 @@ public class TaskManager {
         if (cursor.getCount() > 0) {
             cursor.close();
             return true;
-
         } else {
             cursor.close();
             return false;
         }
-
     }
 
     public ArrayList<Tasks> getTasks() {

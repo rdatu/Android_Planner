@@ -24,7 +24,7 @@ public class TasksDatabaseHelper extends SQLiteOpenHelper {
     private static String COLUMN_DATE = "task_date";
     private static String COLUMN_TIMESLOT = "task_time";
     private static String COLUMN_PRIORITY = "task_priority";
-    private static SQLiteDatabase mDatabase;
+
 
     public TasksDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -34,7 +34,7 @@ public class TasksDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table tasks (task_date varchar(30),task_time varchar(15), task_name varchar(100), task_description varchar(200), task_place varchar(100),task_priority varchar(10))");
-        mDatabase = db;
+
     }
 
     public long insertTasks(String name, String desc, String place, String date, String time, String priority) {
