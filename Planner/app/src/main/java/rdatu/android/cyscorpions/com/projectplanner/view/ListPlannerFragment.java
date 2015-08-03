@@ -204,10 +204,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
         try {
             getListView().invalidateViews();
         } catch (Exception e) {
-
         }
-
-
     }
 
     private String getStringDate() {
@@ -235,9 +232,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
             priority = "LOW";
             task = "FUNCTION";
         }
-
         mCallbacks.onTimeSlotSelected(time, getActivity().getTitle().toString(), name, place, descr, priority, task);
-
     }
 
     public void onResume() {
@@ -252,7 +247,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
 
     @Override
     public void onJumpTo(String date) {
-
+        //Not Used
     }
 
     public interface Callbacks {
@@ -265,9 +260,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
     private class ListFragmentAdapter extends ArrayAdapter<String> {
 
         public ListFragmentAdapter(String[] time_slot) {
-
             super(getActivity(), android.R.layout.simple_list_item_1, time_slot);
-
         }
 
         @Override
@@ -280,12 +273,16 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
 
             mTimeSlot = (TextView) convertView.findViewById(R.id.time_slot);
             mTimeSlot.setText(time);
+
             mTextTask = (TextView) convertView.findViewById(R.id.task_name);
             mTextTask.setText(getString(R.string.default_task_text));
+
             mDescription = (TextView) convertView.findViewById(R.id.task_description);
             mDescription.setText("No Description");
+
             mLayout = (LinearLayout) convertView.findViewById(R.id.list_item_back);
             mLayout.setBackgroundColor(Color.WHITE);
+
             mListTasks = mTaskManager.getTasksForDate(getActivity().getTitle().toString());
 
             Log.d("Planner", getActivity().getTitle().toString());
@@ -317,14 +314,10 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
                     } else {
                         //mLayout.setBackgroundColor(Color.WHITE);
                     }
-
                 }
             } catch (Exception e) {
                 Log.e("Planner", "Error", e);
-
             }
-
-
             return convertView;
         }
     }
