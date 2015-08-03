@@ -234,29 +234,20 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
 
     private boolean areFieldsFilled() {
         boolean ready = true;
+        if ((isNotEmpty(mTaskNameText) & isNotEmpty(mTaskDescriptionText) & isNotEmpty(mPlaceText)) &&
+                TextUtils.isEmpty(mFromTimeText.getText().toString()) &&
+                TextUtils.isEmpty(mToTimeText.getText().toString()) &&
+                TextUtils.isEmpty(mDateButton.getText().toString()) &&
+                TextUtils.isEmpty(mPriorityButton.getText().toString())) {
+            return false;
+        }
 
-        ready = isNotEmpty(mTaskNameText);
-        ready = isNotEmpty(mTaskDescriptionText);
-        ready = isNotEmpty(mPlaceText);
-
-        if (TextUtils.isEmpty(mFromTimeText.getText().toString()))
-            ready = false;
-        if (TextUtils.isEmpty(mToTimeText.getText().toString()))
-            ready = false;
-        if (TextUtils.isEmpty(mDateButton.getText().toString()))
-            ready = false;
-        if (TextUtils.isEmpty(mPriorityButton.getText().toString()))
-            ready = false;
-
-        return ready;
+        return true;
     }
 
     private boolean isNotEmpty(EditText item) {
-        if (TextUtils.isEmpty(item.getText().toString())) {
-            item.setError("This item must not be Empty");
-            return false;
-        }
-        return true;
+        item.setError("This item must not be Empty");
+        return !TextUtils.isEmpty(item.getText().toString());
     }
 
 
