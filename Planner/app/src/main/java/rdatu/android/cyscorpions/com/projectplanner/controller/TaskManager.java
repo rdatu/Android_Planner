@@ -51,8 +51,9 @@ public class TaskManager {
     public ArrayList<Tasks> getTasksForDate(String date) {
         TaskCursor cursor = mHelper.queryTaskForDate(date);
         cursor.moveToFirst();
-
-        return cursor.getTasks();
+        ArrayList<Tasks> temp = cursor.getTasks();
+        cursor.close();
+        return temp;
     }
 
     private void loadTasks() {
