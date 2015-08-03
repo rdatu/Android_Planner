@@ -273,6 +273,9 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
             mLayout = (LinearLayout) convertView.findViewById(R.id.list_item_back);
             mLayout.setBackgroundColor(Color.WHITE);
 
+            mTextTask.setTextColor(Color.DKGRAY);
+            mDescription.setTextColor(Color.DKGRAY);
+
             mListTasks = mTaskManager.getTasksForDate(getActivity().getTitle().toString());
 
             Log.d("Planner", getActivity().getTitle().toString());
@@ -287,15 +290,11 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
                             mTextTask.setText(t.getTaskName());
 
                             mDescription.setText(t.getDescription());
-                            if (t.getPriority().equals("HIGH")) {
-                                mLayout.setBackgroundColor(Color.RED);
-                                mTextTask.setTextColor(Color.DKGRAY);
-                                mDescription.setTextColor(Color.DKGRAY);
-                            } else {
-                                mLayout.setBackgroundColor(Color.GREEN);
-                                mTextTask.setTextColor(Color.DKGRAY);
-                                mDescription.setTextColor(Color.DKGRAY);
-                            }
+
+                            int color = (t.getPriority().equals("HIGH")) ? Color.RED : Color.GREEN;
+ 
+                            mLayout.setBackgroundColor(color);
+
                             break;
                         } else {
                             mTextTask.setText(getString(R.string.default_task_text));
