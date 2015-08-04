@@ -58,10 +58,10 @@ public class DatePickerDialog extends DialogFragment implements android.app.Date
         c.set(Calendar.MONTH, monthOfYear);
         c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         switch (mDatePickerFunction) {
-            case ScheduleTaskActivity.FUNCTION_FORCHANGE:
+            case ScheduleTaskActivity.DIALOG_FUNCTION:
                 mCallbacks.onDateChanged(df.format(c.getTime()));
                 break;
-            case ListPlannerFragment.FUNCTION_FORCHANGE:
+            case ListPlannerFragment.DIALOG_FUNCTION:
                 mCallbacks.onJumpTo(df.format(c.getTime()));
                 break;
         }

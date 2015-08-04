@@ -34,7 +34,7 @@ import rdatu.android.cyscorpions.com.projectplanner.view.dialogs.DatePickerDialo
  */
 public class ListPlannerFragment extends ListFragment implements DatePickerDialog.Callbacks {
 
-    public static final String FUNCTION_FORCHANGE = "jumpto";
+    public static final String DIALOG_FUNCTION = "jumpto";
     private final String[] TIME_SLOT = {
             "00:00 - 01:00", "01:00 - 02:00",
             "02:00 - 03:00", "03:00 - 04:00",
@@ -210,7 +210,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
             place = "";
             descr = "";
             priority = "LOW";
-            task = "FUNCTION";
+            task = "add";
         }
         mCallbacks.onTimeSlotSelected(time, getActivity().getTitle().toString(), name, place, descr, priority, task);
     }

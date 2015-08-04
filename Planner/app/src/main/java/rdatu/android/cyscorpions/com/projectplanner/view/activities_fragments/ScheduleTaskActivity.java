@@ -25,7 +25,7 @@ import rdatu.android.cyscorpions.com.projectplanner.view.dialogs.TimePickerDialo
  */
 public class ScheduleTaskActivity extends FragmentActivity implements DatePickerDialog.Callbacks, TimePickerDialog.Callbacks, OverwriteDialog.Callbacks {
 
-    public static final String FUNCTION_FORCHANGE = "simplepicker";
+    public static final String DIALOG_FUNCTION = "simplepicker";
     public static final String ACTIVITY_FUNCTION = "FUNCTION";
     private final String PRIORITY_HIGH = "HIGH";
     private final String PRIORITY_LOW = "LOW";
@@ -196,7 +196,7 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
 
     private void showDatePicker() {
         FragmentManager fm = getSupportFragmentManager();
-        DatePickerDialog dialog = DatePickerDialog.newInstance(mDateButton.getText().toString(), FUNCTION_FORCHANGE);
+        DatePickerDialog dialog = DatePickerDialog.newInstance(mDateButton.getText().toString(), DIALOG_FUNCTION);
         dialog.show(fm, "datePicker");
     }
 
