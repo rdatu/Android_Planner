@@ -1,4 +1,4 @@
-package rdatu.android.cyscorpions.com.projectplanner.view;
+package rdatu.android.cyscorpions.com.projectplanner.view.dialogs;
 
 import android.app.Activity;
 import android.app.Dialog;

@@ -1,4 +1,4 @@
-package rdatu.android.cyscorpions.com.projectplanner.view;
+package rdatu.android.cyscorpions.com.projectplanner.view.activities_fragments;
 
 import android.app.Activity;
 import android.content.Intent;

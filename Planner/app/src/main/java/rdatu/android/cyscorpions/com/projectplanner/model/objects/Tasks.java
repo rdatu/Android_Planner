@@ -1,4 +1,4 @@
-package rdatu.android.cyscorpions.com.projectplanner.model;
+package rdatu.android.cyscorpions.com.projectplanner.model.objects;
 
 import java.util.UUID;
 

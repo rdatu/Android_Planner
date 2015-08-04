@@ -1,4 +1,4 @@
-package rdatu.android.cyscorpions.com.projectplanner.model;
+package rdatu.android.cyscorpions.com.projectplanner.model.databasehelpers;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,6 +9,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.ArrayList;
+
+import rdatu.android.cyscorpions.com.projectplanner.model.objects.Tasks;
 
 /**
  * Created by rayeldatu on 7/28/15.

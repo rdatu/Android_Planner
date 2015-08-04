@@ -1,4 +1,4 @@
-package rdatu.android.cyscorpions.com.projectplanner.view;
+package rdatu.android.cyscorpions.com.projectplanner.view.activities_fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

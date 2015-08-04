@@ -1,4 +1,4 @@
-package rdatu.android.cyscorpions.com.projectplanner.view;
+package rdatu.android.cyscorpions.com.projectplanner.view.dialogs;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -10,6 +10,9 @@ import android.widget.DatePicker;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import rdatu.android.cyscorpions.com.projectplanner.view.activities_fragments.ListPlannerFragment;
+import rdatu.android.cyscorpions.com.projectplanner.view.activities_fragments.ScheduleTaskActivity;
 
 /**
  * Created by rayeldatu on 7/28/15.

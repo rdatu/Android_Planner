@@ -1,7 +1,6 @@
-package rdatu.android.cyscorpions.com.projectplanner.view;
+package rdatu.android.cyscorpions.com.projectplanner.view.activities_fragments;
 
 import android.annotation.TargetApi;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -14,11 +13,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
 import rdatu.android.cyscorpions.com.projectplanner.R;
-import rdatu.android.cyscorpions.com.projectplanner.controller.TaskManager;
-import rdatu.android.cyscorpions.com.projectplanner.model.Tasks;
+import rdatu.android.cyscorpions.com.projectplanner.controller.modelmanagers.TaskManager;
+import rdatu.android.cyscorpions.com.projectplanner.model.objects.Tasks;
+import rdatu.android.cyscorpions.com.projectplanner.view.dialogs.DatePickerDialog;
+import rdatu.android.cyscorpions.com.projectplanner.view.dialogs.OverwriteDialog;
+import rdatu.android.cyscorpions.com.projectplanner.view.dialogs.TimePickerDialog;
 
 /**
  * Created by rayeldatu on 7/27/15.
@@ -29,15 +29,13 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
     public static final String ACTIVITY_FUNCTION = "FUNCTION";
     private final String PRIORITY_HIGH = "HIGH";
     private final String PRIORITY_LOW = "LOW";
-    private final int COLOR_HIGH = Color.RED;
-    private final int COLOR_LOW = Color.GREEN;
 
     private String mTimeStart, mTimeEnd, mDateSelected, mPlace, mName, mDescription, mPriority;
     private EditText mFromTimeText, mToTimeText, mTaskNameText, mTaskDescriptionText, mPlaceText;
     private Button mDateButton, mDoneButton, mPriorityButton;
     private LinearLayout mLayout;
     private TaskManager mTaskManager;
-    private ArrayList<Tasks> mListTasks;
+
 
     public static String getFormattedTime(int hour) {
         String s, e;
@@ -149,7 +147,7 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
 
 
                     if (interval < 0) {
-                        mToTimeText.setError("Please set the time forward this is not a time machine :)");
+                        mToTimeText.setError("Please set the time forward this is not a time machine:)");
                         return;
                     }
 

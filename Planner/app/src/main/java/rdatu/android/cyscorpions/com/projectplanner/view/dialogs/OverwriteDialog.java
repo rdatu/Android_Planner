@@ -1,4 +1,4 @@
-package rdatu.android.cyscorpions.com.projectplanner.view;
+package rdatu.android.cyscorpions.com.projectplanner.view.dialogs;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -23,7 +23,7 @@ public class OverwriteDialog extends DialogFragment implements AlertDialog.OnCli
     private static final String EXTRA_END = "end";
 
     private Callbacks mCallbacks;
-    private String mName, mDescription, mTime, mDate, mPlace, mPriority;
+    private String mName, mDescription,  mDate, mPlace, mPriority;
     private int mStart, mEnd;
 
     public OverwriteDialog() {

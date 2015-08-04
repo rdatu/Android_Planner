@@ -1,13 +1,13 @@
-package rdatu.android.cyscorpions.com.projectplanner.controller;
+package rdatu.android.cyscorpions.com.projectplanner.controller.modelmanagers;
 
 import android.content.Context;
 import android.util.Log;
 
 import java.util.ArrayList;
 
-import rdatu.android.cyscorpions.com.projectplanner.model.Tasks;
-import rdatu.android.cyscorpions.com.projectplanner.model.TasksDatabaseHelper;
-import rdatu.android.cyscorpions.com.projectplanner.model.TasksDatabaseHelper.TaskCursor;
+import rdatu.android.cyscorpions.com.projectplanner.model.databasehelpers.TasksDatabaseHelper;
+import rdatu.android.cyscorpions.com.projectplanner.model.databasehelpers.TasksDatabaseHelper.TaskCursor;
+import rdatu.android.cyscorpions.com.projectplanner.model.objects.Tasks;
 
 /**
  * Created by rayeldatu on 7/28/15.

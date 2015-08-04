@@ -1,4 +1,4 @@
-package rdatu.android.cyscorpions.com.projectplanner.view;
+package rdatu.android.cyscorpions.com.projectplanner.view.activities_fragments;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
@@ -14,7 +14,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import rdatu.android.cyscorpions.com.projectplanner.R;
-import rdatu.android.cyscorpions.com.projectplanner.controller.PlannerPagerAdapter;
+import rdatu.android.cyscorpions.com.projectplanner.controller.adapters.PlannerPagerAdapter;
+import rdatu.android.cyscorpions.com.projectplanner.view.dialogs.DatePickerDialog;
 
 /**
  * Created by rayeldatu on 7/27/15.
