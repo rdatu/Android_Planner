@@ -20,7 +20,6 @@ public class TimePickerDialog extends DialogFragment implements android.app.Time
     private String mStringTime;
     private Callbacks mCallbacks;
 
-
     public TimePickerDialog() {
     }
 

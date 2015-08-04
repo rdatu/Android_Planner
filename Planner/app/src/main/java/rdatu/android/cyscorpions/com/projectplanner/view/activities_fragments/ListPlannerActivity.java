@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.MenuItem;
 
 import java.text.SimpleDateFormat;
@@ -45,7 +44,6 @@ public class ListPlannerActivity extends FragmentActivity implements ListPlanner
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -82,7 +80,7 @@ public class ListPlannerActivity extends FragmentActivity implements ListPlanner
 
         mAdapter = new PlannerPagerAdapter(getSupportFragmentManager(), LIST_PLANNER);
 
-        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i1) {
                 //Intentionally left Blank!
