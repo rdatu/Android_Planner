@@ -1,4 +1,4 @@
-package rdatu.android.cyscorpions.com.projectplanner.model.databasehelpers;
+package rdatu.android.cyscorpions.com.projectplanner.model.database_helpers;
 
 import android.content.ContentValues;
 import android.content.Context;

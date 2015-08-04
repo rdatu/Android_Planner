@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import rdatu.android.cyscorpions.com.projectplanner.R;
-import rdatu.android.cyscorpions.com.projectplanner.controller.modelmanagers.TaskManager;
+import rdatu.android.cyscorpions.com.projectplanner.controller.model_managers.TaskManager;
 import rdatu.android.cyscorpions.com.projectplanner.model.objects.Tasks;
 import rdatu.android.cyscorpions.com.projectplanner.view.dialogs.DatePickerDialog;
 
