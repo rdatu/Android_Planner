@@ -109,13 +109,8 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         Tasks t = mTaskManager.getLoadedTask();
-
-        if (t == null)
-            return;
-
         getActivity().getMenuInflater().inflate(R.menu.context_menu, menu);
         mTaskManager.getSpecificTask(getActivity().getTitle().toString(), TIME_SLOT[info.position]);
-
         menu.setHeaderTitle(TIME_SLOT[info.position]);
     }
 
