@@ -33,6 +33,5 @@ public class HomeActivity extends Activity {
 
         SimpleDateFormat df = new SimpleDateFormat("MMM-dd-yyyy");
         Toast.makeText(getApplicationContext(), df.format(Calendar.getInstance().getTime()), Toast.LENGTH_LONG).show();
-
     }
 }

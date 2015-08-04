@@ -60,14 +60,14 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
         //Blank default Constructor is required, Don't Remove
     }
 
-    public ListPlannerFragment(Calendar a, Context c) {
-        mCalendar = a;
+    public ListPlannerFragment(Calendar calendar, Context c) {
+        mCalendar = calendar;
         mAppContext = c;
         mTaskManager = TaskManager.get(mAppContext);
     }
 
-    public static ListPlannerFragment newInstance(Calendar a, Context c) {
-        return new ListPlannerFragment(a, c);
+    public static ListPlannerFragment newInstance(Calendar calendar, Context c) {
+        return new ListPlannerFragment(calendar, c);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
 
         setHasOptionsMenu(true);
         mListTasks = new ArrayList<>();
-        mListTasks = mTaskManager.getTasks();
+        mListTasks = mTaskManager.getTasksLists();
         ListFragmentAdapter adapter = new ListFragmentAdapter(TIME_SLOT);
         adapter.setNotifyOnChange(true);
         setListAdapter(adapter);

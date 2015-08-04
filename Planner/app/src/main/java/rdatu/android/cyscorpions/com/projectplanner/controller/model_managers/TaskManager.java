@@ -17,7 +17,7 @@ public class TaskManager {
     private static TaskManager sTaskManager;
     private Context mAppContext;
     private TasksDatabaseHelper mHelper;
-    private ArrayList<Tasks> mTasks;
+    private ArrayList<Tasks> mTasksLists;
     private Tasks mLoadedTask;
 
     private TaskManager(Context context) {
@@ -55,15 +55,15 @@ public class TaskManager {
         TaskCursor cursor = mHelper.queryTask();
         cursor.moveToFirst();
         if (!cursor.isAfterLast()) {
-            mTasks = cursor.getTasks();
+            mTasksLists = cursor.getTasks();
         } else {
-            mTasks = null;
+            mTasksLists = null;
         }
         cursor.close();
     }
 
     public void saveTask(Tasks task) {
-        mTasks.add(task);
+        mTasksLists.add(task);
         mHelper.insertTasks(task.getTaskName(), task.getDescription(), task.getPlace(), task.getDate(), task.getTimeSlot(), task.getPriority());
     }
 
@@ -101,7 +101,7 @@ public class TaskManager {
         return returnValue;
     }
 
-    public ArrayList<Tasks> getTasks() {
-        return mTasks;
+    public ArrayList<Tasks> getTasksLists() {
+        return mTasksLists;
     }
 }
