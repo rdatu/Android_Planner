@@ -50,9 +50,8 @@ public class TasksDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void deleteWithCondition(String date, String time) {
-        String Where = COLUMN_DATE + "='" + date + "' AND " + COLUMN_TIMESLOT + "='" + time + "'";
         try {
-            mWritableDatabase.execSQL("DELETE FROM tasks WHERE " + Where);
+            mWritableDatabase.execSQL("DELETE FROM tasks WHERE task_date=? AND task_time=?", new String[]{date, time});
         } catch (Exception e) {
             Log.e("Planner", "Error:", e);
         }

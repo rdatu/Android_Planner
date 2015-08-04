@@ -82,11 +82,7 @@ public class TimePickerDialog extends DialogFragment implements android.app.Time
 
         mCallbacks.onTimeChanged(df.format(c.getTime()));
     }
-<<<<<<< Updated upstream
-    
-=======
 
->>>>>>> Stashed changes
     public interface Callbacks {
         void onTimeChanged(String time);
     }
