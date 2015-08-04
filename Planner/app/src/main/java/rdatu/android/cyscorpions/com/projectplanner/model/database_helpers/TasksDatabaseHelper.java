@@ -27,13 +27,11 @@ public class TasksDatabaseHelper extends SQLiteOpenHelper {
     private static String COLUMN_PRIORITY = "task_priority";
     private SQLiteDatabase mWritableDatabase, mReadableDatabase;
 
-
     public TasksDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
         mWritableDatabase = getWritableDatabase();
         mReadableDatabase = getReadableDatabase();
     }
-
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -87,7 +85,7 @@ public class TasksDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        //Implemented Method cannot remove
     }
 
     public class TaskCursor extends CursorWrapper {
@@ -128,7 +126,6 @@ public class TasksDatabaseHelper extends SQLiteOpenHelper {
             }
             return arrTasks;
         }
-
 
     }
 }

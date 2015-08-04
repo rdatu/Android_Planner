@@ -11,7 +11,7 @@ import android.support.v4.app.DialogFragment;
 /**
  * Created by rayeldatu on 7/29/15.
  */
-public class OverwriteDialog extends DialogFragment implements AlertDialog.OnClickListener {
+public class OverwriteDialog extends DialogFragment{
 
     private static final String EXTRA_NAME = "name";
     private static final String EXTRA_DESC = "descr";
@@ -23,11 +23,11 @@ public class OverwriteDialog extends DialogFragment implements AlertDialog.OnCli
     private static final String EXTRA_END = "end";
 
     private Callbacks mCallbacks;
-    private String mName, mDescription,  mDate, mPlace, mPriority;
+    private String mName, mDescription, mDate, mPlace, mPriority;
     private int mStart, mEnd;
 
     public OverwriteDialog() {
-
+        //Blank Constructor is Required, Don't Remove
     }
 
     public static OverwriteDialog newInstance(String name, String descr, String place, String priority, String date, int start, int end) {
@@ -73,13 +73,6 @@ public class OverwriteDialog extends DialogFragment implements AlertDialog.OnCli
                     }
                 }).setNegativeButton("NO", null).create();
     }
-
-    @Override
-    public void onClick(DialogInterface dialog, int which) {
-
-
-    }
-
 
     public interface Callbacks {
         void onOverwrite(String name, String descr, String place, String priority, int start, int end, String date);

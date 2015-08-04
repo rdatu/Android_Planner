@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
+import android.util.Log;
 import android.widget.TimePicker;
 
 import java.text.SimpleDateFormat;
@@ -21,6 +23,7 @@ public class TimePickerDialog extends DialogFragment implements android.app.Time
     private Callbacks mCallbacks;
 
     public TimePickerDialog() {
+        //Blank Constructor is Required, Don't Remove
     }
 
 
@@ -52,9 +55,13 @@ public class TimePickerDialog extends DialogFragment implements android.app.Time
         SimpleDateFormat df = new SimpleDateFormat("kk:mm");
         Calendar c = Calendar.getInstance();
         try {
-            t = df.parse(mStringTime);
+            if (TextUtils.isEmpty(mStringTime)) {
+                t = df.parse("00:00");
+            } else {
+                t = df.parse(mStringTime);
+            }
         } catch (Exception e) {
-
+            Log.e("Planner", "Something went wrong", e);
         }
         c.setTime(t);
         int hour = c.get(Calendar.HOUR_OF_DAY);

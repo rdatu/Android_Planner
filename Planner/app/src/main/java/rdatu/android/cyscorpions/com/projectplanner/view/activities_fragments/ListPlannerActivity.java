@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.MenuItem;
 
 import java.text.SimpleDateFormat;
@@ -29,8 +30,10 @@ public class ListPlannerActivity extends FragmentActivity implements ListPlanner
     public static final String EXTRA_DESC = "description";
     public static final String EXTRA_PLACE = "place";
     public static final String EXTRA_PRIORITY = "priority";
+
     private static final int PAGE_MIDDLE = 1;
-    final ListPlannerFragment[] LIST_PLANNER = new ListPlannerFragment[3];
+
+    private final ListPlannerFragment[] LIST_PLANNER = new ListPlannerFragment[3];
     private ViewPager mViewPager;
     private Calendar mCurrentCalendar;
     private int mSelectedPageIndex;
@@ -40,7 +43,6 @@ public class ListPlannerActivity extends FragmentActivity implements ListPlanner
     @Override
     public void onStart() {
         super.onStart();
-
     }
 
     @Override
@@ -59,7 +61,7 @@ public class ListPlannerActivity extends FragmentActivity implements ListPlanner
                 mCurrentCalendar.setTime(df.parse(getIntent().getStringExtra(EXTRA_NEWDATE)));
                 mCurrentCalendar.add(Calendar.DAY_OF_MONTH, -1);
             } catch (Exception e) {
-
+                Log.e("Planner", "Something went wrong", e);
             }
         } else {
             mCurrentCalendar = Calendar.getInstance();

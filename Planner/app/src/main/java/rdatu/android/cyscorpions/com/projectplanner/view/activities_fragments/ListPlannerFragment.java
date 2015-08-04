@@ -35,7 +35,6 @@ import rdatu.android.cyscorpions.com.projectplanner.view.dialogs.DatePickerDialo
 public class ListPlannerFragment extends ListFragment implements DatePickerDialog.Callbacks {
 
     public static final String FUNCTION_FORCHANGE = "jumpto";
-    private static final String TAG = "Planner";
     private final String[] TIME_SLOT = {
             "00:00 - 01:00", "01:00 - 02:00",
             "02:00 - 03:00", "03:00 - 04:00",
@@ -59,16 +58,14 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
     private Context mAppContext;
     private ArrayList<Tasks> mListTasks;
 
-
     public ListPlannerFragment() {
-
+        //Blank default Constructor is required, Don't Remove
     }
 
     public ListPlannerFragment(Calendar a, Context c) {
         mCalendar = a;
         mAppContext = c;
         mTaskManager = TaskManager.get(mAppContext);
-
     }
 
     public static ListPlannerFragment newInstance(Calendar a, Context c) {
@@ -92,22 +89,17 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
         ListFragmentAdapter adapter = new ListFragmentAdapter(TIME_SLOT);
         adapter.setNotifyOnChange(true);
         setListAdapter(adapter);
-
-
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.planner_menu, menu);
-
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
-
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -115,11 +107,12 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         Tasks t = mTaskManager.getLoadedTask();
+
         if (t == null)
             return;
+
         getActivity().getMenuInflater().inflate(R.menu.context_menu, menu);
         mTaskManager.getSpecificTask(getActivity().getTitle().toString(), TIME_SLOT[info.position]);
 
@@ -154,7 +147,6 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
     }
 
     protected final void onNextDay() {
-
         if (mCalendar.get(Calendar.DAY_OF_MONTH) == mCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
             mCalendar.add(Calendar.MONTH, 1);
             mCalendar.set(Calendar.DAY_OF_MONTH, 1);
@@ -167,7 +159,6 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
             Log.e("Planner", "Error", e);
         }
 
-
         try {
             getListView().invalidateViews();
         } catch (Exception e) {
@@ -177,7 +168,6 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
 
 
     protected final void onPreviousDay() {
-
         if (mCalendar.get(Calendar.DAY_OF_MONTH) == mCalendar.getActualMinimum(Calendar.DAY_OF_MONTH)) {
             mCalendar.add(Calendar.MONTH, -1);
             mCalendar.set(Calendar.DAY_OF_MONTH, mCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
@@ -188,11 +178,12 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
         try {
             mCallbacks.onListUpdate(getStringDate());
         } catch (Exception e) {
-            Log.e("Planner", "Error", e);
+            Log.e("Planner", "Something went wrong", e);
         }
         try {
             getListView().invalidateViews();
         } catch (Exception e) {
+            Log.e("Planner", "Something went wrong", e);
         }
     }
 
@@ -247,7 +238,6 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
 
 
     private class ListFragmentAdapter extends ArrayAdapter<String> {
-
         public ListFragmentAdapter(String[] time_slot) {
             super(getActivity(), android.R.layout.simple_list_item_1, time_slot);
         }
@@ -290,7 +280,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
                             mDescription.setText(t.getDescription());
 
                             int color = (t.getPriority().equals("HIGH")) ? Color.RED : Color.GREEN;
- 
+
                             mLayout.setBackgroundColor(color);
 
                             break;

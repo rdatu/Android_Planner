@@ -25,7 +25,7 @@ public class DatePickerDialog extends DialogFragment implements android.app.Date
     private String mStringDate, mDatePickerFunction;
 
     public DatePickerDialog() {
-
+        //Blank Constructor is required, Don't Remove
     }
 
     public static DatePickerDialog newInstance(String date, String function) {

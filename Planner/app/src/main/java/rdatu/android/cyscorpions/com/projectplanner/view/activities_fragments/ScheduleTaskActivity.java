@@ -145,7 +145,6 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
                     place = mPlaceText.getText().toString();
                     priority = mPriorityButton.getText().toString();
 
-
                     if (interval < 0) {
                         mToTimeText.setError("Please set the time forward this is not a time machine:)");
                         return;
@@ -193,7 +192,6 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
         task.setTimeSlot(time);
         mTaskManager.saveTask(task);
         finish();
-
     }
 
     private void showDatePicker() {
@@ -245,7 +243,6 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
         }
         return returnValue;
     }
-
 
     @Override
     public void onOverwrite(String name, String descr, String place, String priority, int start, int end, String date) {

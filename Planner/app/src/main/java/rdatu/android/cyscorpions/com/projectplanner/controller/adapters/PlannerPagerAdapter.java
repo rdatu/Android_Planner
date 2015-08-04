@@ -11,21 +11,21 @@ import rdatu.android.cyscorpions.com.projectplanner.view.activities_fragments.Li
  */
 public class PlannerPagerAdapter extends FragmentPagerAdapter {
 
-    ListPlannerFragment[] fragList;
+    private ListPlannerFragment[] mFragmentList;
 
     public PlannerPagerAdapter(FragmentManager fm, ListPlannerFragment[] fragList) {
         super(fm);
-        this.fragList = fragList;
+        mFragmentList = fragList;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return fragList[position];
+        return mFragmentList[position];
     }
 
     @Override
     public int getCount() {
-        return fragList.length;
+        return mFragmentList.length;
     }
 
 }
