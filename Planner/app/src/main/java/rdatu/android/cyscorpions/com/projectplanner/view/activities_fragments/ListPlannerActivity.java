@@ -48,7 +48,6 @@ public class ListPlannerActivity extends FragmentActivity implements ListPlanner
     @SuppressWarnings("deprecation")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("Planner", "OnCreate");
 
         Calendar prevDay, nextDay;
 

@@ -76,7 +76,7 @@ public class DatePickerDialog extends DialogFragment implements android.app.Date
         try {
             date = df.parse(mStringDate);
         } catch (Exception e) {
-            Log.d("Planner", "Can't parse");
+            Log.e("Planner", "Something went wrong", e);
         }
         calendar.setTime(date);
 

@@ -67,7 +67,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
     public ListPlannerFragment(Calendar a, Context c) {
         mCalendar = a;
         mAppContext = c;
-        mTaskManager = TaskManager.get(mAppContext, true);
+        mTaskManager = TaskManager.get(mAppContext);
 
     }
 
@@ -80,7 +80,6 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
         super.onAttach(activity);
         mCallbacks = (Callbacks) activity;
         mCallbacks.onListUpdate(getStringDate());
-        Log.d(TAG, "onAttach successful..." + " : " + (mCalendar == null) + ", " + getStringDate());
     }
 
     @Override
@@ -134,7 +133,6 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
 
         switch (item.getItemId()) {
             case R.id.menu_item_delete:
-                Log.d("Planner", TIME_SLOT[position]);
                 mTaskManager.deleteEntry(getActivity().getTitle().toString(), TIME_SLOT[position]);
                 getListView().invalidateViews();
         }
@@ -279,7 +277,6 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
 
             mListTasks = mTaskManager.getTasksForDate(getActivity().getTitle().toString());
 
-            Log.d("Planner", getActivity().getTitle().toString());
             try {
                 mTextTask.setText(getString(R.string.default_task_text));
                 if (mListTasks == null) {

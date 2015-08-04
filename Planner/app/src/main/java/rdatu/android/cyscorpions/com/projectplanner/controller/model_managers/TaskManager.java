@@ -20,25 +20,20 @@ public class TaskManager {
     private ArrayList<Tasks> mTasks;
     private Tasks mLoadedTask;
 
-    private TaskManager(Context context, boolean shouldLoadAllTasks) {
+    private TaskManager(Context context) {
         mAppContext = context;
         mHelper = new TasksDatabaseHelper(mAppContext);
 
         try {
-            if (shouldLoadAllTasks) {
-                loadTasks();
-            } else {
-
-            }
-
+            loadTasks();
         } catch (Exception e) {
-            Log.d("Planner", e.toString());
+            Log.e("Planner", "Something went wrong", e);
         }
     }
 
-    public static TaskManager get(Context c, boolean all) {
+    public static TaskManager get(Context c) {
         if (sTaskManager == null) {
-            sTaskManager = new TaskManager(c.getApplicationContext(), all);
+            sTaskManager = new TaskManager(c.getApplicationContext());
         }
         return sTaskManager;
     }
@@ -51,9 +46,9 @@ public class TaskManager {
     public ArrayList<Tasks> getTasksForDate(String date) {
         TaskCursor cursor = mHelper.queryTaskForDate(date);
         cursor.moveToFirst();
-        ArrayList<Tasks> temp = cursor.getTasks();
+        ArrayList<Tasks> taskList = cursor.getTasks();
         cursor.close();
-        return temp;
+        return taskList;
     }
 
     private void loadTasks() {
@@ -62,7 +57,7 @@ public class TaskManager {
         if (!cursor.isAfterLast()) {
             mTasks = cursor.getTasks();
         } else {
-            mTasks = new ArrayList<Tasks>();
+            mTasks = null;
         }
         cursor.close();
     }
@@ -93,15 +88,17 @@ public class TaskManager {
     }
 
     public boolean hasTasks(String date, String time) {
+        boolean returnValue;
         TaskCursor cursor = mHelper.queryTask(date, time);
         Log.d("Planner", cursor.getCount() + " is the size");
         if (cursor.getCount() > 0) {
             cursor.close();
-            return true;
+            returnValue = true;
         } else {
             cursor.close();
-            return false;
+            returnValue = false;
         }
+        return returnValue;
     }
 
     public ArrayList<Tasks> getTasks() {
