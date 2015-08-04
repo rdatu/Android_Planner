@@ -236,6 +236,10 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
         void onTimeSlotSelected(String time, String date, String name, String place, String descr, String priority, String task);
     }
 
+    static class ViewHolder {
+        TextView timeSlotText, taskText, descriptionText;
+        LinearLayout linearLayout;
+    }
 
     private class ListFragmentAdapter extends ArrayAdapter<String> {
         public ListFragmentAdapter(String[] time_slot) {
@@ -244,48 +248,46 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder viewHolder;
+
             if (convertView == null) {
                 convertView = getActivity().getLayoutInflater().inflate(R.layout.daily_list_item, null);
+                viewHolder = new ViewHolder();
+                viewHolder.timeSlotText = (TextView) convertView.findViewById(R.id.time_slot);
+                viewHolder.taskText = (TextView) convertView.findViewById(R.id.task_name);
+                viewHolder.descriptionText = (TextView) convertView.findViewById(R.id.task_description);
+                viewHolder.linearLayout = (LinearLayout) convertView.findViewById(R.id.list_item_back);
+                convertView.setTag(viewHolder);
+            } else {
+                viewHolder = (ViewHolder) convertView.getTag();
             }
 
             String time = getItem(position);
 
-            mTimeSlot = (TextView) convertView.findViewById(R.id.time_slot);
-            mTimeSlot.setText(time);
-
-            mTextTask = (TextView) convertView.findViewById(R.id.task_name);
-            mTextTask.setText(getString(R.string.default_task_text));
-
-            mDescription = (TextView) convertView.findViewById(R.id.task_description);
-            mDescription.setText("No Description");
-
-            mLayout = (LinearLayout) convertView.findViewById(R.id.list_item_back);
-            mLayout.setBackgroundColor(Color.WHITE);
-
-            mTextTask.setTextColor(Color.DKGRAY);
-            mDescription.setTextColor(Color.DKGRAY);
+            viewHolder.timeSlotText.setText(time);
+            viewHolder.taskText.setText(getString(R.string.default_task_text));
+            viewHolder.descriptionText.setText("No Description");
+            viewHolder.linearLayout.setBackgroundColor(Color.WHITE);
+            viewHolder.taskText.setTextColor(Color.DKGRAY);
+            viewHolder.descriptionText.setTextColor(Color.DKGRAY);
 
             mListTasks = mTaskManager.getTasksForDate(getActivity().getTitle().toString());
-
             try {
-                mTextTask.setText(getString(R.string.default_task_text));
+                viewHolder.taskText.setText(getString(R.string.default_task_text));
                 if (mListTasks == null) {
                     return convertView;
                 }
                 for (Tasks t : mListTasks) {
                     if (t.getDate().equals(getActivity().getTitle().toString())) {
-                        if (t.getTimeSlot().equals(mTimeSlot.getText().toString())) {
-                            mTextTask.setText(t.getTaskName());
-
-                            mDescription.setText(t.getDescription());
+                        if (t.getTimeSlot().equals(viewHolder.timeSlotText.getText().toString())) {
+                            viewHolder.taskText.setText(t.getTaskName());
+                            viewHolder.descriptionText.setText(t.getDescription());
 
                             int color = (t.getPriority().equals("HIGH")) ? Color.RED : Color.GREEN;
-
-                            mLayout.setBackgroundColor(color);
-
+                            viewHolder.linearLayout.setBackgroundColor(color);
                             break;
                         } else {
-                            mTextTask.setText(getString(R.string.default_task_text));
+                            viewHolder.taskText.setText(getString(R.string.default_task_text));
                         }
                     }
                 }
