@@ -55,6 +55,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
     private Callbacks mCallbacks;
     private Context mAppContext;
     private ArrayList<Tasks> mListTasks;
+    private String mDateFromTitle;
 
     public ListPlannerFragment() {
         //Blank default Constructor is required, Don't Remove
@@ -87,6 +88,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
         ListFragmentAdapter adapter = new ListFragmentAdapter(TIME_SLOT);
         adapter.setNotifyOnChange(true);
         setListAdapter(adapter);
+
     }
 
     @Override
@@ -124,7 +126,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
 
         switch (item.getItemId()) {
             case R.id.menu_item_delete:
-                mTaskManager.deleteEntry(getActivity().getTitle().toString(), TIME_SLOT[position]);
+                mTaskManager.deleteEntry(mDateFromTitle, TIME_SLOT[position]);
                 getListView().invalidateViews();
         }
         return true;
@@ -195,7 +197,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
         String name, place, descr, priority, task;
         Tasks tasks;
         String time = ((TextView) v.findViewById(R.id.time_slot)).getText().toString();
-        mTaskManager.getSpecificTask(getActivity().getTitle().toString(), time);
+        mTaskManager.getSpecificTask(mDateFromTitle, time);
         tasks = mTaskManager.getLoadedTask();
         if (tasks != null) {
             name = tasks.getTaskName();
@@ -210,7 +212,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
             priority = "LOW";
             task = "add";
         }
-        mCallbacks.onTimeSlotSelected(time, getActivity().getTitle().toString(), name, place, descr, priority, task);
+        mCallbacks.onTimeSlotSelected(time, mDateFromTitle, name, place, descr, priority, task);
     }
 
     public void onResume() {
@@ -247,7 +249,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder;
-
+            mDateFromTitle = getActivity().getTitle().toString();
             if (convertView == null) {
                 convertView = getActivity().getLayoutInflater().inflate(R.layout.daily_list_item, null);
                 viewHolder = new ViewHolder();
@@ -269,14 +271,14 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
             viewHolder.taskText.setTextColor(Color.DKGRAY);
             viewHolder.descriptionText.setTextColor(Color.DKGRAY);
 
-            mListTasks = mTaskManager.getTasksForDate(getActivity().getTitle().toString());
+            mListTasks = mTaskManager.getTasksForDate(mDateFromTitle);
             try {
                 viewHolder.taskText.setText(getString(R.string.default_task_text));
                 if (mListTasks == null) {
                     return convertView;
                 }
                 for (Tasks t : mListTasks) {
-                    if (t.getDate().equals(getActivity().getTitle().toString())) {
+                    if (t.getDate().equals(mDateFromTitle)) {
                         if (t.getTimeSlot().equals(viewHolder.timeSlotText.getText().toString())) {
                             viewHolder.taskText.setText(t.getTaskName());
                             viewHolder.descriptionText.setText(t.getDescription());

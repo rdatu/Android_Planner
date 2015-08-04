@@ -26,7 +26,6 @@ public class TimePickerDialog extends DialogFragment implements android.app.Time
         //Blank Constructor is Required, Don't Remove
     }
 
-
     public static TimePickerDialog newInstance(String time) {
         Bundle args = new Bundle();
         TimePickerDialog fragment = new TimePickerDialog();
