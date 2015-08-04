@@ -149,7 +149,7 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
 
 
                     if (interval < 0) {
-                        Toast.makeText(getApplicationContext(), "Please choose a time within the 24-hour", Toast.LENGTH_SHORT).show();
+                        mToTimeText.setError("Please set the time forward this is not a time machine :)");
                         return;
                     }
 

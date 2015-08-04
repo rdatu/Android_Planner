@@ -17,24 +17,25 @@ public class TasksDatabaseHelper extends SQLiteOpenHelper {
 
     private static String DATABASE_NAME = "task.sqlite";
     private static String TABLE_TASKS = "tasks";
-    private static String COLUMN_TASK_ID = "_id";
     private static String COLUMN_TASK_NAME = "task_name";
     private static String COLUMN_TASK_DESC = "task_description";
     private static String COLUMN_PLACE = "task_place";
     private static String COLUMN_DATE = "task_date";
     private static String COLUMN_TIMESLOT = "task_time";
     private static String COLUMN_PRIORITY = "task_priority";
+    private SQLiteDatabase mWritableDatabase, mReadableDatabase;
 
 
     public TasksDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
+        mWritableDatabase = getWritableDatabase();
+        mReadableDatabase = getReadableDatabase();
     }
 
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table tasks (task_date varchar(30),task_time varchar(15), task_name varchar(100), task_description varchar(200), task_place varchar(100),task_priority varchar(10))");
-
     }
 
     public long insertTasks(String name, String desc, String place, String date, String time, String priority) {
@@ -45,17 +46,13 @@ public class TasksDatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_TASK_DESC, desc);
         cv.put(COLUMN_PLACE, place);
         cv.put(COLUMN_PRIORITY, priority);
-        return getWritableDatabase().insert(TABLE_TASKS, null, cv);
-    }
-
-    public void deleteAll() {
-        getWritableDatabase().delete(TABLE_TASKS, null, null);
+        return mWritableDatabase.insert(TABLE_TASKS, null, cv);
     }
 
     public void deleteWithCondition(String date, String time) {
         String Where = COLUMN_DATE + "='" + date + "' AND " + COLUMN_TIMESLOT + "='" + time + "'";
         try {
-            getWritableDatabase().execSQL("DELETE FROM tasks WHERE " + Where);
+            mWritableDatabase.execSQL("DELETE FROM tasks WHERE " + Where);
         } catch (Exception e) {
             Log.e("Planner", "Error:", e);
         }
@@ -64,7 +61,7 @@ public class TasksDatabaseHelper extends SQLiteOpenHelper {
 
     public void updateTask(String name, String descr, String time, String date, String place, String priority) {
         try {
-            getWritableDatabase().execSQL("UPDATE tasks SET task_name=?, task_description=?,task_place=?,task_priority=? WHERE task_date=? AND task_time =?", new String[]{name, descr, place, priority, date, time});
+            mWritableDatabase.execSQL("UPDATE tasks SET task_name=?, task_description=?,task_place=?,task_priority=? WHERE task_date=? AND task_time =?", new String[]{name, descr, place, priority, date, time});
         } catch (Exception e) {
             Log.e("Planner", "Error: ", e);
         }
@@ -72,17 +69,17 @@ public class TasksDatabaseHelper extends SQLiteOpenHelper {
 
 
     public TaskCursor queryTaskForDate(String date) {
-        Cursor wrapped = getReadableDatabase().rawQuery("SELECT * FROM tasks WHERE task_date= '" + date + "'", null);
+        Cursor wrapped = mReadableDatabase.rawQuery("SELECT * FROM tasks WHERE task_date= '" + date + "'", null);
         return new TaskCursor(wrapped);
     }
 
     public TaskCursor queryTask() {
-        Cursor wrapped = getReadableDatabase().query(TABLE_TASKS, null, null, null, null, null, null);
+        Cursor wrapped = mReadableDatabase.query(TABLE_TASKS, null, null, null, null, null, null);
         return new TaskCursor(wrapped);
     }
 
     public TaskCursor queryTask(String date, String time) {
-        Cursor wrapped = getReadableDatabase().rawQuery("SELECT * FROM tasks WHERE task_date ='" + date + "' AND task_time ='" + time + "'", null);
+        Cursor wrapped = mReadableDatabase.rawQuery("SELECT * FROM tasks WHERE task_date ='" + date + "' AND task_time ='" + time + "'", null);
         return new TaskCursor(wrapped);
     }
 
