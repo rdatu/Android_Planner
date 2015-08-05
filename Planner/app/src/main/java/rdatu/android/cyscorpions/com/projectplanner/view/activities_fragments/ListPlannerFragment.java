@@ -87,9 +87,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
         mListTasks = new ArrayList<>();
         mListTasks = mTaskManager.getTasksLists();
         ListFragmentAdapter adapter = new ListFragmentAdapter(TIME_SLOT);
-        adapter.setNotifyOnChange(true);
         setListAdapter(adapter);
-
     }
 
     @Override
