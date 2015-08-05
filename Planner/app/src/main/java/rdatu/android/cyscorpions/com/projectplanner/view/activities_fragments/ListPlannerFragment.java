@@ -54,7 +54,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
     private TaskManager mTaskManager;
     private Calendar mCalendar;
     private Callbacks mCallbacks;
-    private Context     mAppContext;
+    private Context mAppContext;
     private ArrayList<Tasks> mListTasks;
     private String mDateFromTitle;
 
