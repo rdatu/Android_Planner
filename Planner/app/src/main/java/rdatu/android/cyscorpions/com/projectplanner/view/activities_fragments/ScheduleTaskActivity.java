@@ -48,9 +48,11 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scheduled_activity);
 
+        //Converted to
         String dateSelected, placeSelected, nameSelected, descriptionSelected, prioritySelected;
         EditText inputTextFromTime;
         Button doneButton;
+        //local variables
 
         mTaskManager = TaskManager.get(getApplicationContext());
 
