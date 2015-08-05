@@ -149,7 +149,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
         } else {
             mCalendar.add(Calendar.DAY_OF_MONTH, 1);
         }
-        updateListOnSwipe();
+        updatePageOnSwipe();
     }
 
 
@@ -160,10 +160,10 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
         } else {
             mCalendar.add(Calendar.DAY_OF_MONTH, -1);
         }
-        updateListOnSwipe();
+        updatePageOnSwipe();
     }
 
-    private void updateListOnSwipe() {
+    private void updatePageOnSwipe() {
         try {
             mCallbacks.onListUpdate(getStringDate());
             getListView().invalidateViews();
