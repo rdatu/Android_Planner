@@ -125,7 +125,6 @@ public class TasksDatabaseHelper extends SQLiteOpenHelper {
             }
             return arrTasks;
         }
-
     }
 }
 

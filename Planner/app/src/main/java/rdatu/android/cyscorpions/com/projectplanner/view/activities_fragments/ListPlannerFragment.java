@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -132,8 +133,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = super.onCreateView(inflater, container, savedInstanceState);
-        return v;
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
@@ -151,17 +151,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
         } else {
             mCalendar.add(Calendar.DAY_OF_MONTH, 1);
         }
-        try {
-            mCallbacks.onListUpdate(getStringDate());
-        } catch (Exception e) {
-            Log.e("Planner", "Error", e);
-        }
-
-        try {
-            getListView().invalidateViews();
-        } catch (Exception e) {
-
-        }
+        updateListOnSwipe();
     }
 
 
@@ -172,16 +162,15 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
         } else {
             mCalendar.add(Calendar.DAY_OF_MONTH, -1);
         }
+        updateListOnSwipe();
+    }
 
+    private void updateListOnSwipe() {
         try {
             mCallbacks.onListUpdate(getStringDate());
-        } catch (Exception e) {
-            Log.e("Planner", "Something went wrong", e);
-        }
-        try {
             getListView().invalidateViews();
         } catch (Exception e) {
-            Log.e("Planner", "Something went wrong", e);
+            Toast.makeText(getActivity().getApplicationContext(), "Your swiping too fast, slow down tiger ;)", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -290,7 +279,7 @@ public class ListPlannerFragment extends ListFragment implements DatePickerDialo
                     }
                 }
             } catch (Exception e) {
-                Log.e("Planner", "Error", e);
+                Log.e("Planner", "Something went wrong", e);
             }
             return convertView;
         }

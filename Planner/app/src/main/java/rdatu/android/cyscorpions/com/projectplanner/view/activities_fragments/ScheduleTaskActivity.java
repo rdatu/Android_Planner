@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import rdatu.android.cyscorpions.com.projectplanner.R;
@@ -33,7 +32,6 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
     private String mTimeStart, mTimeEnd, mDateSelected, mPlace, mName, mDescription, mPriority;
     private EditText mFromTimeText, mToTimeText, mTaskNameText, mTaskDescriptionText, mPlaceText;
     private Button mDateButton, mDoneButton, mPriorityButton;
-    private LinearLayout mLayout;
     private TaskManager mTaskManager;
 
 
@@ -50,7 +48,6 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scheduled_activity);
 
-        mLayout = (LinearLayout) findViewById(R.id.list_item_back);
         mTaskManager = TaskManager.get(getApplicationContext());
 
         mDateSelected = getIntent().getStringExtra(ListPlannerActivity.EXTRA_DATE_SELECTED);
@@ -61,13 +58,15 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
         mPriority = getIntent().getStringExtra(ListPlannerActivity.EXTRA_PRIORITY);
 
 
-        if (!timeSelected.equals(null)) {
+        if (timeSelected != null) {
             mTimeStart = timeSelected.substring(0, 5);
             mTimeEnd = timeSelected.substring(8, timeSelected.length());
         }
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
-            getActionBar().setTitle(timeSelected + ", " + mDateSelected);
+            if (getActionBar() != null) {
+                getActionBar().setTitle(timeSelected + ", " + mDateSelected);
+            }
         }
 
         mFromTimeText = (EditText) findViewById(R.id.fromTime);
@@ -106,13 +105,18 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
             @Override
             public void onClick(View v) {
                 String p = mPriorityButton.getText().toString();
-                if (p.equals(PRIORITY_HIGH)) {
-                    mPriorityButton.setText(PRIORITY_LOW);
-                } else if (p.equals(PRIORITY_LOW)) {
-                    mPriorityButton.setText(PRIORITY_HIGH);
-                } else {
-                    mPriorityButton.setText(PRIORITY_LOW);
+
+                switch (p) {
+                    case PRIORITY_HIGH:
+                        mPriorityButton.setText(PRIORITY_LOW);
+                        break;
+                    case PRIORITY_LOW:
+                        mPriorityButton.setText(PRIORITY_HIGH);
+                        break;
+                    default:
+                        mPriorityButton.setText(PRIORITY_HIGH);
                 }
+
             }
         });
         mDoneButton = (Button) findViewById(R.id.doneButton);
@@ -131,7 +135,7 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
             @Override
             public void onClick(View v) {
                 if (areFieldsFilled()) {
-                    String name, descr, date, place, priority, time;
+                    String name, descr, date, place, priority;
                     int interval;
                     int timeStart, timeEnd;
                     boolean hasDuplicate = false;
@@ -180,7 +184,6 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
             }
         });
     }
-
 
     private void saveTasks(String date, String name, String descr, String place, String priority, String time) {
         Tasks task = new Tasks();
