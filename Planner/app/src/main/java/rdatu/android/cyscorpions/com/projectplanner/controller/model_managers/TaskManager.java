@@ -63,7 +63,6 @@ public class TaskManager {
     }
 
     public void saveTask(Tasks task) {
-        mTasksLists.add(task);
         mHelper.insertTasks(task.getTaskName(), task.getDescription(), task.getPlace(), task.getDate(), task.getTimeSlot(), task.getPriority());
     }
 
@@ -90,7 +89,6 @@ public class TaskManager {
     public boolean hasTasks(String date, String time) {
         boolean returnValue;
         TaskCursor cursor = mHelper.queryTask(date, time);
-        Log.d("Planner", cursor.getCount() + " is the size");
         if (cursor.getCount() > 0) {
             returnValue = true;
         } else {

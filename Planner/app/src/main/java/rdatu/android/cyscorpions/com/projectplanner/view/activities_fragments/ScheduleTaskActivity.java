@@ -63,7 +63,6 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
         placeSelected = getIntent().getStringExtra(ListPlannerActivity.EXTRA_PLACE);
         prioritySelected = getIntent().getStringExtra(ListPlannerActivity.EXTRA_PRIORITY);
 
-
         if (timeSelected != null) {
             mTimeStart = timeSelected.substring(0, 5);
             mTimeEnd = timeSelected.substring(8, timeSelected.length());
@@ -122,7 +121,6 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
                     default:
                         mPriorityButton.setText(PRIORITY_HIGH);
                 }
-
             }
         });
         doneButton = (Button) findViewById(R.id.doneButton);
@@ -167,12 +165,9 @@ public class ScheduleTaskActivity extends FragmentActivity implements DatePicker
                     }
 
                     for (int i = timeStart; i < timeEnd; i++) {
-                        try {
-                            hasDuplicate = mTaskManager.hasTasks(date, getFormattedTime(i));
-                            if (hasDuplicate)
-                                break;
-                        } catch (Exception e) {
-                            Log.e("Planner", "Something went wrong!", e);
+                        if (mTaskManager.hasTasks(date, getFormattedTime(i))) {
+                            hasDuplicate = true;
+                            break;
                         }
                     }
 
