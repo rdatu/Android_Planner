@@ -92,12 +92,11 @@ public class TaskManager {
         TaskCursor cursor = mHelper.queryTask(date, time);
         Log.d("Planner", cursor.getCount() + " is the size");
         if (cursor.getCount() > 0) {
-            cursor.close();
             returnValue = true;
         } else {
-            cursor.close();
             returnValue = false;
         }
+        cursor.close();
         return returnValue;
     }
 
